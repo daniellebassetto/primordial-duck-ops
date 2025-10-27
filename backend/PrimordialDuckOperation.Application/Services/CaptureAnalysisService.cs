@@ -22,19 +22,19 @@ public class CaptureAnalysisService
             DistanceFromBase = distance
         };
 
-        var costPenalty = analysis.OperationalCost > 80 ? analysis.OperationalCost * 0.5m : analysis.OperationalCost * 0.3m;
-        var riskPenalty = analysis.RiskLevel > 70 ? analysis.RiskLevel * 0.8m : analysis.RiskLevel * 0.5m;
-        var militaryPenalty = analysis.MilitaryPower * 0.4m;
+        var costPenalty = analysis.OperationalCost > 80 ? analysis.OperationalCost * 0.4m : analysis.OperationalCost * 0.25m;
+        var riskPenalty = analysis.RiskLevel > 70 ? analysis.RiskLevel * 0.6m : analysis.RiskLevel * 0.35m;
+        var militaryPenalty = analysis.MilitaryPower * 0.3m;
 
         var capturabilityBonus = duck.HibernationStatus switch
         {
-            HibernationStatusEnum.DeepHibernation => 40m,
-            HibernationStatusEnum.InTrance => 25m,
-            HibernationStatusEnum.Awake => -30m,
+            HibernationStatusEnum.DeepHibernation => 35m,
+            HibernationStatusEnum.InTrance => 20m,
+            HibernationStatusEnum.Awake => -25m,
             _ => 0m
         };
 
-        var baseScore = analysis.ScientificValue * 1.8m;
+        var baseScore = analysis.ScientificValue * 1.2m;
         var rawScore = baseScore + capturabilityBonus - riskPenalty - militaryPenalty - (costPenalty / 2);
         analysis.OverallScore = (int)Math.Max(1, Math.Min(100, rawScore));
 

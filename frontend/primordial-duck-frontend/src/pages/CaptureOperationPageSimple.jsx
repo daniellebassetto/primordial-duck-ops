@@ -97,7 +97,7 @@ const CaptureOperationPageSimple = () => {
     <Layout>
       <div className="capture-page-simple">
         <div className="capture-header">
-          <h1><Target size={32} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> 3ª Missão - Captura do Pato Primordial</h1>
+          <h1><Target size={32} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />Captura do Pato Primordial</h1>
           <p>Sistema de captura com mini-jogo interativo</p>
         </div>
 

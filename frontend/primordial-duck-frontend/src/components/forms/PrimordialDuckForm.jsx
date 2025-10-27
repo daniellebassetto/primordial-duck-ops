@@ -4,6 +4,7 @@ import { Save, ArrowLeft, Edit } from 'lucide-react';
 import Layout from '../layout/Layout.jsx';
 import LocationMap from '../common/LocationMap.jsx';
 import DroneVideoLoader from '../common/DroneVideoLoader.jsx';
+import { useToast } from '../common/ToastContainer.jsx';
 import { primordialDuckService, superPowerService, droneService } from '../../services/api';
 import getDuckImage from '../../utils/duckImageSelector';
 import assets from '../../assets';
@@ -14,6 +15,7 @@ import '../../styles/steps.css';
 const PrimordialDuckForm = ({ mode = 'create' }) => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { showError, showWarning } = useToast();
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [superPowers, setSuperPowers] = useState([]);
@@ -213,14 +215,17 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
 
   const validateLocation = async () => {
     if (!formData.locationLatitude || !formData.locationLongitude || !formData.cityName || !formData.country) {
+      console.log('Validação de localização pulada - dados incompletos');
       return true;
     }
 
     try {
+      console.log('Fazendo chamada ao Nominatim...', { lat: formData.locationLatitude, lng: formData.locationLongitude });
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${formData.locationLatitude}&lon=${formData.locationLongitude}&accept-language=pt-BR`
       );
       const data = await response.json();
+      console.log('Resposta do Nominatim:', data);
 
       const detectedCity = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || '';
       const detectedCountry = data.address?.country || '';
@@ -248,7 +253,9 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    console.log('handleSubmit chamado', { isView, currentStep });
     if (isView || currentStep !== 5) {
+      console.log('Submit cancelado - condições não atendidas');
       return;
     }
     setLoading(true);
@@ -257,9 +264,13 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
     const isLocationValid = await validateLocation();
     if (!isLocationValid) {
       setLoading(false);
+      setErrors(['⚠️ Validação de localização falhou. Verifique a mensagem de aviso e ajuste cidade/país ou clique no mapa para corrigir as coordenadas (tome cuidado com erros gramaticais).']);
+      showWarning('Localização inconsistente! Volte ao passo 3 para corrigir.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
+    console.log('Enviando para API...');
     try {
       const payload = {
         droneId: parseInt(formData.droneId),
@@ -933,6 +944,14 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
             </div>
           )}
 
+          {!locationValidation.isValid && currentStep === 5 && !isView && (
+            <div className="location-warning">
+              <h4>⚠️ ATENÇÃO - Localização Não Validada</h4>
+              <p>{locationValidation.message}</p>
+              <p><strong>Volte ao passo 3 para corrigir ou a catalogação será bloqueada.</strong></p>
+            </div>
+          )}
+
           {renderStepContent()}
 
           {!isView && (
@@ -947,7 +966,15 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                   Próximo
                 </button>
               ) : (
-                <button type="button" onClick={handleSubmit} disabled={loading} className="btn btn-primary">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    console.log('Botão Confirmar Catalogação clicado');
+                    handleSubmit(e);
+                  }}
+                  disabled={loading}
+                  className="btn btn-primary"
+                >
                   <Save size={16} />
                   {loading ? 'Salvando...' : isEdit ? 'Confirmar Atualização' : 'Confirmar Catalogação'}
                 </button>

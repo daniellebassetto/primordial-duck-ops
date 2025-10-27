@@ -136,19 +136,19 @@ const CaptureLogicPage = () => {
               <div className="formula">
                 <div className="formula-step">
                   <h4>1. Pontuação Base</h4>
-                  <code>Base = Valor Científico × 1.8</code>
+                  <code>Base = Valor Científico × 1.2</code>
                 </div>
                 <div className="formula-step">
                   <h4>2. Bônus de Capturabilidade (Status)</h4>
-                  <code>Hibernação Profunda: +40 (Muito fácil) <Moon size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
-                  <code>Em Transe: +25 (Moderado) <Zap size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
-                  <code>Desperto: -30 (PENALIDADE - Perigoso!) <Eye size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
+                  <code>Hibernação Profunda: +35 (Muito fácil) <Moon size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
+                  <code>Em Transe: +20 (Moderado) <Zap size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
+                  <code>Desperto: -25 (PENALIDADE - Perigoso!) <Eye size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
                 </div>
                 <div className="formula-step">
                   <h4>3. Penalidades</h4>
-                  <code>Penalidade Custo = Custo &gt; 80% ? × 0.5 : × 0.3</code>
-                  <code>Penalidade Risco = Risco &gt; 70% ? × 0.8 : × 0.5</code>
-                  <code>Penalidade Militar = Poder Militar × 0.4</code>
+                  <code>Penalidade Custo = Custo &gt; 80% ? × 0.4 : × 0.25</code>
+                  <code>Penalidade Risco = Risco &gt; 70% ? × 0.6 : × 0.35</code>
+                  <code>Penalidade Militar = Poder Militar × 0.3</code>
                 </div>
                 <div className="formula-step">
                   <h4>4. Resultado Final</h4>
