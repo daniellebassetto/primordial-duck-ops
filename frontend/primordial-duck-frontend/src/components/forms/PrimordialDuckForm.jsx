@@ -215,17 +215,14 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
 
   const validateLocation = async () => {
     if (!formData.locationLatitude || !formData.locationLongitude || !formData.cityName || !formData.country) {
-      console.log('Validação de localização pulada - dados incompletos');
       return true;
     }
 
     try {
-      console.log('Fazendo chamada ao Nominatim...', { lat: formData.locationLatitude, lng: formData.locationLongitude });
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${formData.locationLatitude}&lon=${formData.locationLongitude}&accept-language=pt-BR`
       );
       const data = await response.json();
-      console.log('Resposta do Nominatim:', data);
 
       const detectedCity = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || '';
       const detectedCountry = data.address?.country || '';
@@ -253,9 +250,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
-    console.log('handleSubmit chamado', { isView, currentStep });
     if (isView || currentStep !== 5) {
-      console.log('Submit cancelado - condições não atendidas');
       return;
     }
     setLoading(true);
@@ -270,7 +265,6 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
       return;
     }
 
-    console.log('Enviando para API...');
     try {
       const payload = {
         droneId: parseInt(formData.droneId),

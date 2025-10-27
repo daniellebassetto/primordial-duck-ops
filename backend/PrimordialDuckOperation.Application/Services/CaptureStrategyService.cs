@@ -1,7 +1,7 @@
-using System.Reflection;
-using System.Runtime.Serialization;
 using PrimordialDuckOperation.Domain.Entities;
 using PrimordialDuckOperation.Domain.Enums;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace PrimordialDuckOperation.Application.Services;
 
