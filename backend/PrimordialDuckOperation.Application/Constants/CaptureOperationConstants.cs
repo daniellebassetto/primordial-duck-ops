@@ -4,7 +4,7 @@ public static class CaptureOperationConstants
 {
     public static class ErrorMessages
     {
-        public const string DuckAlreadyHasOperation = "Este Pato Primordial já possui uma operação de captura.";
+        public const string DuckAlreadyHasOperation = "Este Pato Primordial já possui uma operação de captura ativa ou foi capturado com sucesso.";
         public const string DuckOrDroneNotFound = "Pato ou drone não encontrado";
     }
 

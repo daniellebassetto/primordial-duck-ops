@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PrimordialDuckOperation.Domain.Entities;
+using PrimordialDuckOperation.Domain.Enums;
 using PrimordialDuckOperation.Domain.Interfaces;
 using PrimordialDuckOperation.Infrastructure.Data;
 
@@ -37,6 +38,9 @@ public class CaptureOperationRepository(ApplicationDbContext context) : BaseRepo
     public async Task<bool> HasOperationsByDuckIdAsync(long duckId)
     {
         return await _dbSet
-            .AnyAsync(op => op.PrimordialDuckId == duckId);
+            .AnyAsync(op => op.PrimordialDuckId == duckId &&
+                           (op.Status == CaptureStatus.Preparing ||
+                            op.Status == CaptureStatus.InProgress ||
+                            op.Status == CaptureStatus.Success));
     }
 }
