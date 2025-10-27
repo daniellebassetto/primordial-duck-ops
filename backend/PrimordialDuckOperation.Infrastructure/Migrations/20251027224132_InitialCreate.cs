@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -269,8 +270,8 @@ namespace PrimordialDuckOperation.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     pais = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    latitude = table.Column<decimal>(type: "decimal(10,8)", nullable: false),
-                    longitude = table.Column<decimal>(type: "decimal(10,8)", nullable: false),
+                    latitude = table.Column<decimal>(type: "decimal(20,10)", nullable: false),
+                    longitude = table.Column<decimal>(type: "decimal(20,10)", nullable: false),
                     ponto_referencia = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     precisao_gps_valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false),

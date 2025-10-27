@@ -11,6 +11,20 @@ A aplicação está disponível nos seguintes endereços:
 - **Frontend (Interface Web)**: http://172.172.122.181:8080/
 - **Backend (API Swagger)**: http://172.172.122.181:7000/swagger/index.html
 
+### ⚠️ Não consegue acessar a aplicação em produção?
+
+**Problema**: Network error ou timeout ao acessar http://172.172.122.181:8080 ou http://172.172.122.181:7000
+
+**Causa comum**: Firewall ou configuração de rede bloqueando o acesso.
+
+**Soluções**:
+
+**Verificar sua rede local**:
+   - ✅ Redes corporativas/públicas podem bloquear portas customizadas (7000, 8080)
+   - ✅ Tente acessar de outra rede (dados móveis 4G/5G, rede doméstica)
+   - ✅ Desative VPN temporariamente para testar
+   - ✅ Verifique firewall do Windows/antivírus
+
 ### 🚀 Deploy Automatizado
 
 A aplicação é implantada automaticamente em uma **VM Azure Linux Ubuntu 22.04 B1ms** através de pipeline CI/CD.
@@ -386,7 +400,7 @@ npm install
 
 # Executar em modo desenvolvimento
 npm run dev
-# Aplicação disponível em: http://localhost:5173
+# Aplicação disponível em: http://localhost:3000
 
 # Build para produção
 npm run build
@@ -643,7 +657,7 @@ VITE_EMAILJS_PUBLIC_KEY=sua_public_key
 npm run dev
 
 # Frontend estará disponível em:
-# - http://localhost:5173 (Vite dev server)
+# - http://localhost:3000 (Vite dev server)
 ```
 
 **Para build de produção**:
@@ -843,7 +857,7 @@ docker-compose up -d --force-recreate
 | MySQL    | 3306  | localhost:3306               |
 | Backend  | 7000  | http://localhost:7000        |
 | Swagger  | 7000  | http://localhost:7000/swagger|
-| Frontend | 5173  | http://localhost:5173        |
+| Frontend | 3000  | http://localhost:3000        |
 
 ---
 

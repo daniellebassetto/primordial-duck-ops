@@ -12,7 +12,7 @@ using PrimordialDuckOperation.Infrastructure.Data;
 namespace PrimordialDuckOperation.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251027025256_InitialCreate")]
+    [Migration("20251027224132_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -598,11 +598,11 @@ namespace PrimordialDuckOperation.Infrastructure.Migrations
                                 .HasColumnName("pais");
 
                             b1.Property<decimal>("Latitude")
-                                .HasColumnType("decimal(10,8)")
+                                .HasColumnType("decimal(20,10)")
                                 .HasColumnName("latitude");
 
                             b1.Property<decimal>("Longitude")
-                                .HasColumnType("decimal(10,8)")
+                                .HasColumnType("decimal(20,10)")
                                 .HasColumnName("longitude");
 
                             b1.Property<string>("ReferencePoint")

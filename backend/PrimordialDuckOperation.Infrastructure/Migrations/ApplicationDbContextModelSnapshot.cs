@@ -595,11 +595,11 @@ namespace PrimordialDuckOperation.Infrastructure.Migrations
                                 .HasColumnName("pais");
 
                             b1.Property<decimal>("Latitude")
-                                .HasColumnType("decimal(10,8)")
+                                .HasColumnType("decimal(20,10)")
                                 .HasColumnName("latitude");
 
                             b1.Property<decimal>("Longitude")
-                                .HasColumnType("decimal(10,8)")
+                                .HasColumnType("decimal(20,10)")
                                 .HasColumnName("longitude");
 
                             b1.Property<string>("ReferencePoint")

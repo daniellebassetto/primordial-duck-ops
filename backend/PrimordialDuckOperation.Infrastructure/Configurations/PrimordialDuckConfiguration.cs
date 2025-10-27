@@ -35,8 +35,8 @@ public class PrimordialDuckConfiguration : IEntityTypeConfiguration<PrimordialDu
         {
             location.Property(l => l.CityName).HasColumnName("cidade").HasMaxLength(200).IsRequired();
             location.Property(l => l.Country).HasColumnName("pais").HasMaxLength(100).IsRequired();
-            location.Property(l => l.Latitude).HasColumnName("latitude").HasColumnType("decimal(10,8)").IsRequired();
-            location.Property(l => l.Longitude).HasColumnName("longitude").HasColumnType("decimal(10,8)").IsRequired();
+            location.Property(l => l.Latitude).HasColumnName("latitude").HasColumnType("decimal(20,10)").IsRequired();
+            location.Property(l => l.Longitude).HasColumnName("longitude").HasColumnType("decimal(20,10)").IsRequired();
             location.Property(l => l.ReferencePoint).HasColumnName("ponto_referencia").HasMaxLength(300);
         });
 
