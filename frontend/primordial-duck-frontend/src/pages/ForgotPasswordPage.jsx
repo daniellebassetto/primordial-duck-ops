@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import authService from '../services/authService';
 import emailService from '../services/emailService';
 import { Mail, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
+import assets from '../assets';
 import './AuthPages.css';
 
 const ForgotPasswordPage = () => {
@@ -42,7 +43,7 @@ const ForgotPasswordPage = () => {
     return (
         <div className="auth-page forgot-password-page">
             <div className="auth-logo">
-                <img src="/src/assets/images/logo.png" alt="Primordial Duck Operation" />
+                <img src={assets.images.logo} alt="Primordial Duck Operation" />
             </div>
             <div className="auth-container">
                 <div className="auth-header">

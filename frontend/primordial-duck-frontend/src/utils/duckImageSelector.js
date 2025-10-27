@@ -1,5 +1,5 @@
 const getDuckImage = (status, mutations) => {
-  const basePath = '/src/assets/images/patos-primordiais/';
+  const basePath = '/assets/images/patos-primordiais/';
 
   switch (status) {
     case 'Desperto':

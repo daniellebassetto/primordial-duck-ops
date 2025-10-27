@@ -1,14 +1,15 @@
 import React from 'react';
 import Modal from '../Modal';
+import assets from '../../assets';
 import './CaptureResultModal.css';
 
 const CaptureResultModal = ({ isOpen, onClose, result, selectedDuck, selectedDrone, droneImpact }) => {
   if (!result) return null;
 
   const getResultVideo = () => {
-    if (result.captureResult === 'success') return '/src/assets/videos/pato-perdendo.mp4';
-    if (result.captureResult === 'escaped') return '/src/assets/videos/pato-fugindo.mp4';
-    return '/src/assets/videos/pato-vencendo.mp4';
+    if (result.captureResult === 'success') return assets.videos.patoPerdendo;
+    if (result.captureResult === 'escaped') return assets.videos.patoFugindo;
+    return assets.videos.patoVencendo;
   };
 
   const getResultTitle = () => {

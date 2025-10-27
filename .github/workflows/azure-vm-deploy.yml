@@ -186,7 +186,7 @@ jobs:
               image: ghcr.io/${{ github.repository }}/frontend:latest
               container_name: pdo-frontend
               ports:
-                - "80:80"
+                - "8080:80"
                 - "443:443"
               depends_on:
                 - api
@@ -274,10 +274,10 @@ jobs:
           fi
           
           # Check if Frontend port is open  
-          echo "Checking if Frontend is accessible at $API_HOST:80"
+          echo "Checking if Frontend is accessible at $API_HOST:8080"
           
-          if timeout 10 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/80" 2>/dev/null; then
-            echo "✅ Frontend port 80 is open and accepting connections!"
+          if timeout 10 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/8080" 2>/dev/null; then
+            echo "✅ Frontend port 8080 is open and accepting connections!"
           else
             echo "⚠️ Frontend port check failed (may still be starting...)"
           fi
@@ -285,7 +285,7 @@ jobs:
           echo ""
           echo "ℹ️  Note: Services may take a few minutes to fully initialize."
           echo "📱 Access your application at:"
-          echo "   Frontend: http://$API_HOST"
+          echo "   Frontend: http://$API_HOST:8080"
           echo "   API: http://$API_HOST:7000"
           echo "   Swagger: http://$API_HOST:7000/swagger"
 
@@ -294,8 +294,9 @@ jobs:
         run: |
           if [ "${{ job.status }}" == "success" ]; then
             echo "✅ Deployment to Azure VM completed successfully!"
-            echo "🌐 Application URL: http://${{ secrets.AZURE_VM_HOST }}"
+            echo "🌐 Frontend URL: http://${{ secrets.AZURE_VM_HOST }}:8080"
             echo "🔧 API URL: http://${{ secrets.AZURE_VM_HOST }}:7000"
+            echo "📖 Swagger URL: http://${{ secrets.AZURE_VM_HOST }}:7000/swagger"
           else
             echo "❌ Deployment failed. Check the logs for details."
           fi

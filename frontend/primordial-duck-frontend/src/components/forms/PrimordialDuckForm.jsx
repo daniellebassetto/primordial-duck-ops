@@ -716,7 +716,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                 <img
                   src={getDuckImage(formData.hibernationStatus, parseInt(formData.mutationCount) || 0)}
                   alt={`Pato ${formData.hibernationStatus}`}
-                  onError={(e) => e.target.src = '/src/assets/images/patos-primordiais/pato-desperto-1.png'}
+                  onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
                 />
                 <p>Visualização baseada no status e mutações</p>
               </div>
@@ -746,7 +746,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                 <img
                   src={getDuckImage(formData.hibernationStatus, parseInt(formData.mutationCount) || 0)}
                   alt={`Pato ${formData.hibernationStatus}`}
-                  onError={(e) => e.target.src = '/src/assets/images/patos-primordiais/pato-desperto-1.png'}
+                  onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
                 />
                 <div className="specimen-id">{isEdit ? `ESPÉCIME #${id.toString().padStart(3, '0')}` : 'NOVO ESPÉCIME'}</div>
               </div>

@@ -215,7 +215,7 @@ const PrimordialDucksPage = () => {
                       <img
                         src={getDuckImage(getHibernationStatusName(duck.hibernationStatus), duck.mutationCount)}
                         alt={`Pato ${getHibernationStatusName(duck.hibernationStatus)}`}
-                        onError={(e) => e.target.src = '/src/assets/images/patos-primordiais/pato-desperto-1.png'}
+                        onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
                       />
                     </div>
                     <div className="card-title">

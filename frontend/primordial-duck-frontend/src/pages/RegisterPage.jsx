@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import authService from '../services/authService';
 import { User, Mail, Lock, Shield, AlertCircle } from 'lucide-react';
+import assets from '../assets';
 import './AuthPages.css';
 
 const RegisterPage = () => {
@@ -62,7 +63,7 @@ const RegisterPage = () => {
   return (
     <div className="auth-page register-page">
       <div className="auth-logo">
-        <img src="/src/assets/images/logo.png" alt="Primordial Duck Operation" />
+        <img src={assets.images.logo} alt="Primordial Duck Operation" />
       </div>
       <div className="auth-container">
         <div className="auth-header">

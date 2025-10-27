@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Zap, Target, Users, AlertTriangle, Clock, Key } from 'lucide-react';
+import assets from '../assets';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -63,7 +64,7 @@ const LandingPage = () => {
               loop
               className="recruitment-video"
             >
-              <source src="/src/assets/videos/video-alistamento.mp4" type="video/mp4" />
+              <source src={assets.videos.videoAlistamento} type="video/mp4" />
               Seu navegador não suporta o elemento de vídeo.
             </video>
           </div>
@@ -155,7 +156,7 @@ const LandingPage = () => {
         <div className="cta-overlay"></div>
         <div className="container">
           <div className="cta-logo">
-            <img src="/src/assets/images/logo.png" alt="Primordial Duck Operation" />
+            <img src={assets.images.logo} alt="Primordial Duck Operation" />
           </div>
           <h2 className="cta-title">CHRONODRIVE ATIVADO</h2>
           <div className="cta-content">
