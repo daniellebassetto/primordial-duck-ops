@@ -34,11 +34,15 @@ const LoginPage = () => {
       login(authData);
       navigate('/dashboard');
     } catch (err) {
-      if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
+      console.error('Erro no login:', err);
+      if (err.errors && Array.isArray(err.errors)) {
+        setErrors(err.errors);
+      } else if (err.message) {
+        setErrors([err.message]);
+      } else if (err.response?.data?.message) {
+        setErrors([err.response.data.message]);
       } else {
-        console.error('Login error:', err.response?.data);
-        setErrors([err.response?.data?.message || 'Falha na autenticação. Verifique suas credenciais.']);
+        setErrors(['Falha na autenticação. Verifique suas credenciais.']);
       }
     } finally {
       setLoading(false);

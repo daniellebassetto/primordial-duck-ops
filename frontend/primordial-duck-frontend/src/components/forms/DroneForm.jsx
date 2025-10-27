@@ -98,8 +98,11 @@ const DroneForm = ({ mode = 'create' }) => {
       }
       navigate('/drones');
     } catch (error) {
-      if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
+      console.error('Erro ao salvar drone:', error);
+      if (error.errors && Array.isArray(error.errors)) {
+        setErrors(error.errors);
+      } else if (error.message) {
+        setErrors([error.message]);
       } else {
         setErrors([`Erro ao ${isEdit ? 'atualizar' : 'criar'} drone. Tente novamente.`]);
       }

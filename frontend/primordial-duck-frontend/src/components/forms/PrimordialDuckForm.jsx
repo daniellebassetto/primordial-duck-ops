@@ -6,7 +6,8 @@ import LocationMap from '../common/LocationMap.jsx';
 import DroneVideoLoader from '../common/DroneVideoLoader.jsx';
 import { primordialDuckService, superPowerService, droneService } from '../../services/api';
 import getDuckImage from '../../utils/duckImageSelector';
-import { HibernationStatus, getHibernationStatusName, getClassificationName } from '../../enums/index.js';
+import assets from '../../assets';
+import { HibernationStatus, getHibernationStatusName, getClassificationName, HeightUnit, WeightUnit, GpsPrecisionUnit } from '../../enums/index.js';
 import '../../styles/forms.css';
 import '../../styles/steps.css';
 
@@ -28,6 +29,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
 
   const [currentStep, setCurrentStep] = useState(isView ? 5 : 1);
   const [droneLoading, setDroneLoading] = useState(false);
+  const [initialDroneId, setInitialDroneId] = useState(null);
 
   const steps = [
     { number: 1, title: 'Drone', icon: '🚁' },
@@ -80,27 +82,30 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
       const duck = await primordialDuckService.getById(id);
       const mappedStatus = getHibernationStatusName(duck.hibernationStatus);
 
-      setFormData({
+      const mappedFormData = {
         droneId: duck.drone?.id?.toString() || '',
         nickname: duck.nickname || '',
         height: duck.heightValue?.toString() || duck.heightInCentimeters?.toString() || '',
-        heightUnit: duck.heightUnit === 1 ? 'cm' : 'ft',
+        heightUnit: duck.heightUnit === HeightUnit.CENTIMETERS ? 'cm' : 'ft',
         weight: duck.weightValue?.toString() || duck.weightInGrams?.toString() || '',
-        weightUnit: duck.weightUnit === 1 ? 'g' : 'lb',
+        weightUnit: duck.weightUnit === WeightUnit.GRAMS ? 'g' : 'lb',
         wingspanCm: duck.wingspanInCentimeters?.toString() || '',
         cityName: duck.location?.cityName || '',
         country: duck.location?.country || '',
         locationLatitude: duck.location?.latitude?.toString() || '',
         locationLongitude: duck.location?.longitude?.toString() || '',
         locationPrecision: duck.gpsPrecisionValue?.toString() || duck.gpsPrecisionInCentimeters?.toString() || '',
-        precisionUnit: duck.gpsPrecisionUnit === 1 ? 'cm' : duck.gpsPrecisionUnit === 2 ? 'm' : 'yd',
+        precisionUnit: duck.gpsPrecisionUnit === GpsPrecisionUnit.CENTIMETERS ? 'cm' : duck.gpsPrecisionUnit === GpsPrecisionUnit.METERS ? 'm' : 'yd',
         referencePoint: duck.location?.referencePoint || '',
         hibernationStatus: mappedStatus,
         heartRate: duck.heartRate?.toString() || '',
         mutationCount: duck.mutationCount?.toString() || '',
         superPowerId: duck.superPower?.id?.toString() || '',
         isCaptured: duck.isCaptured || false
-      });
+      };
+
+      setFormData(mappedFormData);
+      setInitialDroneId(duck.drone?.id?.toString() || '');
     } catch (error) {
       console.error('Erro ao carregar pato primordial:', error);
       setErrors(['Erro ao carregar dados do pato primordial.']);
@@ -110,7 +115,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
   };
 
   useEffect(() => {
-    const isDormant = formData.hibernationStatus === 'Em Transe' || formData.hibernationStatus === 'Hibernacao Profunda';
+    const isDormant = formData.hibernationStatus === 'Em Transe' || formData.hibernationStatus === 'Hibernação Profunda';
     const isAwake = formData.hibernationStatus === 'Desperto';
 
     setShowHeartRate(isDormant);
@@ -126,6 +131,12 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
   }, [formData.hibernationStatus]);
 
   useEffect(() => {
+    // Apenas no modo de visualização não deve mudar as unidades
+    if (isView) return;
+
+    // Se estiver editando, só muda as unidades se o usuário mudar o drone
+    if (isEdit && initialDroneId && formData.droneId === initialDroneId) return;
+
     const selectedDrone = drones.find(d => d.id == formData.droneId);
     if (selectedDrone?.countryOfOrigin === 'EUA') {
       setFormData(prev => ({
@@ -142,7 +153,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
         precisionUnit: 'cm'
       }));
     }
-  }, [formData.droneId, drones]);
+  }, [formData.droneId, drones, isView, isEdit, initialDroneId]);
 
   const loadSuperPowers = async () => {
     if (dataLoaded.superPowers) return;
@@ -253,7 +264,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
 
     try {
       const payload = {
-        droneId: formData.droneId,
+        droneId: parseInt(formData.droneId),
         nickname: formData.nickname || null,
         heightValue: parseFloat(formData.height),
         heightUnit: formData.heightUnit === 'cm' ? 1 : 2,
@@ -279,8 +290,11 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
       }
       navigate('/primordialducks');
     } catch (error) {
-      if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
+      console.error('Erro ao salvar pato primordial:', error);
+      if (error.errors && Array.isArray(error.errors)) {
+        setErrors(error.errors);
+      } else if (error.message) {
+        setErrors([error.message]);
       } else {
         setErrors([`Erro ao ${isEdit ? 'atualizar' : 'criar'} pato primordial. Tente novamente.`]);
       }
@@ -679,7 +693,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
             <div className="hibernation-status" style={{ marginBottom: '2rem' }}>
               <label>Status de Hibernação *</label>
               <div className="status-options">
-                {['Desperto', 'Em Transe', 'Hibernacao Profunda'].map(status => (
+                {['Desperto', 'Em Transe', 'Hibernação Profunda'].map(status => (
                   <div key={status} className={`status-card ${formData.hibernationStatus === status ? 'selected' : ''} ${isView ? 'disabled' : ''}`} onClick={() => !isView && setFormData(prev => ({ ...prev, hibernationStatus: status }))}>
                     <div className="status-image">{status === 'Desperto' ? '🐥' : status === 'Em Transe' ? '😴' : '💤'}</div>
                     <span>{status}</span>
@@ -694,7 +708,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                   <input type="number" name="heartRate" value={formData.heartRate} onChange={handleChange} required={!isView} min="1" max="300" disabled={isView} />
                   <small className={`field-hint ${(() => {
                     const heartRate = parseInt(formData.heartRate);
-                    if (!heartRate) return '';
+                    if (!formData.heartRate || !heartRate) return 'field-hint-error';
                     const heartRateValid = heartRate >= 1 && heartRate <= 300;
                     return heartRateValid ? 'field-hint-valid' : 'field-hint-error';
                   })()}`}>💓 Máximo 300 bpm - mais que isso e é um beija-flor! 🐦</small>
@@ -716,7 +730,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                 <img
                   src={getDuckImage(formData.hibernationStatus, parseInt(formData.mutationCount) || 0)}
                   alt={`Pato ${formData.hibernationStatus}`}
-                  onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
+                  onError={(e) => e.target.src = assets.images.patos.patoDesperto1}
                 />
                 <p>Visualização baseada no status e mutações</p>
               </div>
@@ -746,7 +760,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                 <img
                   src={getDuckImage(formData.hibernationStatus, parseInt(formData.mutationCount) || 0)}
                   alt={`Pato ${formData.hibernationStatus}`}
-                  onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
+                  onError={(e) => e.target.src = assets.images.patos.patoDesperto1}
                 />
                 <div className="specimen-id">{isEdit ? `ESPÉCIME #${id.toString().padStart(3, '0')}` : 'NOVO ESPÉCIME'}</div>
               </div>
@@ -783,11 +797,11 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                 <h4>📏 Medidas Físicas</h4>
                 <div className="info-item">
                   <span>Altura:</span>
-                  <span>{formData.height} {formData.heightUnit}</span>
+                  <span>{formData.height} {formData.heightUnit === 'cm' ? 'cm' : 'pés'}</span>
                 </div>
                 <div className="info-item">
                   <span>Peso:</span>
-                  <span>{formData.weight} {formData.weightUnit}</span>
+                  <span>{formData.weight} {formData.weightUnit === 'g' ? 'g' : 'lb'}</span>
                 </div>
                 {formData.wingspanCm && (
                   <div className="info-item">
@@ -809,7 +823,7 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
                 </div>
                 <div className="info-item">
                   <span>Precisão GPS:</span>
-                  <span>{formData.locationPrecision} {formData.precisionUnit}</span>
+                  <span>{formData.locationPrecision} {formData.precisionUnit === 'cm' ? 'cm' : formData.precisionUnit === 'm' ? 'm' : 'jardas'}</span>
                 </div>
                 {formData.referencePoint && (
                   <div className="info-item">

@@ -7,7 +7,8 @@ import Pagination from '../components/common/Pagination.jsx';
 import { useToast } from '../components/common/ToastContainer.jsx';
 import { primordialDuckService } from '../services/api';
 import getDuckImage from '../utils/duckImageSelector';
-import { HibernationStatus, getHibernationStatusName, getHibernationStatusClass } from '../enums/index.js';
+import assets from '../assets';
+import { HibernationStatus, getHibernationStatusName, getHibernationStatusClass, HeightUnit, WeightUnit } from '../enums/index.js';
 import './CrudPages.css';
 
 const PrimordialDucksPage = () => {
@@ -215,7 +216,7 @@ const PrimordialDucksPage = () => {
                       <img
                         src={getDuckImage(getHibernationStatusName(duck.hibernationStatus), duck.mutationCount)}
                         alt={`Pato ${getHibernationStatusName(duck.hibernationStatus)}`}
-                        onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
+                        onError={(e) => e.target.src = assets.images.patos.patoDesperto1}
                       />
                     </div>
                     <div className="card-title">
@@ -256,10 +257,10 @@ const PrimordialDucksPage = () => {
                       <span className="label">Dimensões:</span>
                       <span className="value">
                         {duck.heightValue ?
-                          `${parseFloat(duck.heightValue).toFixed(duck.heightUnit === 'Feet' ? 2 : 0)}${duck.heightUnit === 'Feet' ? 'ft' : 'cm'}` :
+                          `${parseFloat(duck.heightValue).toFixed(duck.heightUnit === HeightUnit.FEET ? 2 : 0)}${duck.heightUnit === HeightUnit.FEET ? 'ft' : 'cm'}` :
                           `${Math.round(duck.heightInCentimeters)}cm`
                         } × {duck.weightValue ?
-                          `${parseFloat(duck.weightValue).toFixed(duck.weightUnit === 'Pounds' ? 2 : 0)}${duck.weightUnit === 'Pounds' ? 'lb' : 'g'}` :
+                          `${parseFloat(duck.weightValue).toFixed(duck.weightUnit === WeightUnit.POUNDS ? 2 : 0)}${duck.weightUnit === WeightUnit.POUNDS ? 'lb' : 'g'}` :
                           `${Math.round(duck.weightInGrams)}g`
                         }
                       </span>

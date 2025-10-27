@@ -122,6 +122,9 @@ public class PrimordialDuckService(IPrimordialDuckRepository primordialDuckRepos
         if (dto.HibernationStatus == HibernationStatusEnum.Awake && !dto.SuperPowerId.HasValue)
             throw new ArgumentException(PrimordialDuckConstants.ErrorMessages.AwakeDuckRequiresSuperPower);
 
+        if ((dto.HibernationStatus == HibernationStatusEnum.InTrance || dto.HibernationStatus == HibernationStatusEnum.DeepHibernation) && !dto.HeartRate.HasValue)
+            throw new ArgumentException(PrimordialDuckConstants.ErrorMessages.DormantDuckRequiresHeartRate);
+
         var height = new HeightMeasurement { Value = dto.HeightValue, Unit = dto.HeightUnit };
         var weight = new WeightMeasurement { Value = dto.WeightValue, Unit = dto.WeightUnit };
         var location = new Location
@@ -149,11 +152,30 @@ public class PrimordialDuckService(IPrimordialDuckRepository primordialDuckRepos
 
     protected override PrimordialDuck MapToEntityForUpdate(UpdatePrimordialDuckRequestDto dto, PrimordialDuck existing)
     {
-        existing.SetProperty(nameof(PrimordialDuck.Nickname), dto.Nickname)
-               .SetProperty(nameof(PrimordialDuck.Height), new HeightMeasurement { Value = dto.HeightValue, Unit = dto.HeightUnit })
-               .SetProperty(nameof(PrimordialDuck.Weight), new WeightMeasurement { Value = dto.WeightValue, Unit = dto.WeightUnit })
-               .SetProperty(nameof(PrimordialDuck.Location), new Location { CityName = dto.CityName, Country = dto.Country, Latitude = dto.Latitude, Longitude = dto.Longitude, ReferencePoint = dto.ReferencePoint })
-               .SetProperty(nameof(PrimordialDuck.GpsPrecision), new PrecisionMeasurement { Value = dto.GpsPrecisionValue, Unit = dto.GpsPrecisionUnit })
+        if (dto.HibernationStatus == HibernationStatusEnum.Awake && !dto.SuperPowerId.HasValue)
+            throw new ArgumentException(PrimordialDuckConstants.ErrorMessages.AwakeDuckRequiresSuperPower);
+
+        if ((dto.HibernationStatus == HibernationStatusEnum.InTrance || dto.HibernationStatus == HibernationStatusEnum.DeepHibernation) && !dto.HeartRate.HasValue)
+            throw new ArgumentException(PrimordialDuckConstants.ErrorMessages.DormantDuckRequiresHeartRate);
+
+        var newHeight = new HeightMeasurement { Value = dto.HeightValue, Unit = dto.HeightUnit };
+        var newWeight = new WeightMeasurement { Value = dto.WeightValue, Unit = dto.WeightUnit };
+        var newGpsPrecision = new PrecisionMeasurement { Value = dto.GpsPrecisionValue, Unit = dto.GpsPrecisionUnit };
+        var newLocation = new Location
+        {
+            CityName = dto.CityName,
+            Country = dto.Country,
+            Latitude = dto.Latitude,
+            Longitude = dto.Longitude,
+            ReferencePoint = dto.ReferencePoint
+        };
+
+        existing.SetProperty(nameof(PrimordialDuck.DroneId), dto.DroneId)
+               .SetProperty(nameof(PrimordialDuck.Nickname), dto.Nickname)
+               .SetProperty(nameof(PrimordialDuck.Height), newHeight)
+               .SetProperty(nameof(PrimordialDuck.Weight), newWeight)
+               .SetProperty(nameof(PrimordialDuck.Location), newLocation)
+               .SetProperty(nameof(PrimordialDuck.GpsPrecision), newGpsPrecision)
                .SetProperty(nameof(PrimordialDuck.HibernationStatus), dto.HibernationStatus)
                .SetProperty(nameof(PrimordialDuck.HeartRate), dto.HeartRate)
                .SetProperty(nameof(PrimordialDuck.MutationCount), dto.MutationCount)

@@ -132,6 +132,12 @@
   transition: all 0.2s;
 }
 
+.filter-select option {
+  background: #1a1a1a;
+  color: #e0e0e0;
+  padding: 8px;
+}
+
 .filter-input::placeholder {
   color: #666;
 }
@@ -158,15 +164,15 @@
     gap: 12px;
     align-items: stretch;
   }
-  
+
   .filter-actions {
     justify-content: center;
   }
-  
+
   .filter-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .sort-section {
     grid-template-columns: 1fr;
   }

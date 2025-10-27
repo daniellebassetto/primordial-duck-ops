@@ -35,8 +35,6 @@ const OperationHistory = ({ operations }) => {
 
   return (
     <div className="operation-history">
-      <h2><ClipboardList size={24} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> Histórico de Operações</h2>
-
       {operations.length === 0 ? (
         <div className="no-operations">
           <p>Nenhuma operação registrada ainda</p>

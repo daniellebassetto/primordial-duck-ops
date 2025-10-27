@@ -1,5 +1,10 @@
 import React from 'react';
-import { Target, DollarSign, Shield, Beaker, TrendingUp, Calculator, Brain, AlertTriangle, Moon, Zap as ZapCircle, Eye, Clock, Search, HelpCircle, X, Swords, Flame, Cpu, Dna, MapPin } from 'lucide-react';
+import {
+  Target, DollarSign, Shield, Beaker, TrendingUp, Calculator, Brain, AlertTriangle,
+  Moon, Zap, Eye, Clock, Search, HelpCircle, X, Swords, Flame, Cpu, Dna, MapPin,
+  Plane, Crosshair, Hexagon, Theater, Ghost, Waves, ShieldAlert, EyeOff,
+  Bolt, MoveRight, Bomb, Sparkles, Volume2, Network, Tornado
+} from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import './CaptureLogicPage.css';
 
@@ -136,7 +141,7 @@ const CaptureLogicPage = () => {
                 <div className="formula-step">
                   <h4>2. Bônus de Capturabilidade (Status)</h4>
                   <code>Hibernação Profunda: +40 (Muito fácil) <Moon size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
-                  <code>Em Transe: +25 (Moderado) <ZapCircle size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
+                  <code>Em Transe: +25 (Moderado) <Zap size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
                   <code>Desperto: -30 (PENALIDADE - Perigoso!) <Eye size={16} style={{ display: 'inline-block', verticalAlign: 'middle' }} /></code>
                 </div>
                 <div className="formula-step">
@@ -216,7 +221,7 @@ const CaptureLogicPage = () => {
                 <p>Manipulação do tempo - imprevisível mas revolucionário</p>
               </div>
               <div className="superpower-card dimensional">
-                <h4><ZapCircle size={20} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> Dimensional</h4>
+                <h4><Zap size={20} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> Dimensional</h4>
                 <div className="superpower-stats">
                   <span>Custo: +22</span>
                   <span>Poder: +30</span>
@@ -299,59 +304,134 @@ const CaptureLogicPage = () => {
 
               <div className="strategies-grid">
                 <div className="strategy-item">
-                  <h4>🚁 Bombardeio Aéreo</h4>
+                  <Plane size={20} className="strategy-icon" />
+                  <h4>Bombardeio Aéreo</h4>
                   <p><strong>Quando:</strong> Patos muito altos (&gt;100cm) ou com muitas mutações (&gt;5)</p>
-                  <p>Ataque de longa distância para evitar confronto direto</p>
+                  <p>Ataque coordenado do alto com força máxima</p>
                 </div>
 
                 <div className="strategy-item">
-                  <h4>⚔️ Assalto Direto</h4>
+                  <Swords size={20} className="strategy-icon" />
+                  <h4>Assalto Direto</h4>
                   <p><strong>Quando:</strong> Patos de tamanho médio (30-100cm) ou muito pesados (&gt;5kg)</p>
-                  <p>Confronto direto com força superior</p>
+                  <p>Ataque frontal com força máxima</p>
                 </div>
 
                 <div className="strategy-item">
-                  <h4>🪤 Armadilhas</h4>
+                  <Hexagon size={20} className="strategy-icon" />
+                  <h4>Armadilha Estratégica</h4>
                   <p><strong>Quando:</strong> Patos muito pequenos (&lt;30cm) ou muito leves (&lt;500g)</p>
-                  <p>Captura sem confronto usando dispositivos especializados</p>
+                  <p>Posicionamento de dispositivos de captura</p>
                 </div>
 
                 <div className="strategy-item">
-                  <h4>🎭 Táticas de Distração</h4>
-                  <p><strong>Quando:</strong> Patos despertos ou com 1-5 mutações</p>
-                  <p>Desviar atenção antes do ataque principal</p>
+                  <Theater size={20} className="strategy-icon" />
+                  <h4>Tática de Distração</h4>
+                  <p><strong>Quando:</strong> Patos despertos com 1-5 mutações</p>
+                  <p>Desvio de atenção seguido de captura</p>
                 </div>
 
                 <div className="strategy-item">
-                  <h4>🥷 Aproximação Furtiva</h4>
+                  <Ghost size={20} className="strategy-icon" />
+                  <h4>Aproximação Furtiva</h4>
                   <p><strong>Quando:</strong> Patos em transe ou hibernação profunda</p>
-                  <p>Captura silenciosa enquanto o alvo está vulnerável</p>
+                  <p>Infiltração silenciosa usando camuflagem avançada</p>
                 </div>
 
                 <div className="strategy-item">
-                  <h4>🌊 Emboscada Subaquática</h4>
-                  <p><strong>Quando:</strong> Patos em regiões de latitude negativa (hemisfério sul)</p>
-                  <p>Ataque a partir de corpos d'água</p>
+                  <Waves size={20} className="strategy-icon" />
+                  <h4>Emboscada Aquática</h4>
+                  <p><strong>Quando:</strong> Patos em regiões de latitude &lt;-30</p>
+                  <p>Ataque surpresa submerso</p>
+                </div>
+
+                <div className="strategy-item">
+                  <ShieldAlert size={20} className="strategy-icon" />
+                  <h4>Cerco Tático</h4>
+                  <p><strong>Quando:</strong> Patos de altura média</p>
+                  <p>Bloqueio estratégico de todas as rotas de fuga</p>
+                </div>
+
+                <div className="strategy-item">
+                  <EyeOff size={20} className="strategy-icon" />
+                  <h4>Infiltração Silenciosa</h4>
+                  <p><strong>Quando:</strong> Patos pequenos e leves</p>
+                  <p>Aproximação indetectável com supressão de sinais</p>
+                </div>
+
+                <div className="strategy-item">
+                  <Bolt size={20} className="strategy-icon" />
+                  <h4>Ataque Relâmpago</h4>
+                  <p><strong>Quando:</strong> Patos despertos</p>
+                  <p>Investida ultrarrápida antes de reação</p>
+                </div>
+
+                <div className="strategy-item">
+                  <MoveRight size={20} className="strategy-icon" />
+                  <h4>Manobra Envolvente</h4>
+                  <p><strong>Quando:</strong> Patos em longitude distante</p>
+                  <p>Ataque coordenado por múltiplos ângulos</p>
+                </div>
+
+                <div className="strategy-item">
+                  <Bomb size={20} className="strategy-icon" />
+                  <h4>Supressão de Área</h4>
+                  <p><strong>Quando:</strong> Patos muito pesados ou com muitas mutações</p>
+                  <p>Neutralização de zona com pulsos atordoantes</p>
+                </div>
+
+                <div className="strategy-item">
+                  <Sparkles size={20} className="strategy-icon" />
+                  <h4>Isca Holográfica</h4>
+                  <p><strong>Quando:</strong> Patos despertos e em transe</p>
+                  <p>Projeções para confundir e capturar</p>
+                </div>
+
+                <div className="strategy-item">
+                  <Volume2 size={20} className="strategy-icon" />
+                  <h4>Pulso Sônico</h4>
+                  <p><strong>Quando:</strong> Patos em transe</p>
+                  <p>Ondas de choque para desorientar o alvo</p>
+                </div>
+
+                <div className="strategy-item">
+                  <Network size={20} className="strategy-icon" />
+                  <h4>Rede de Contenção</h4>
+                  <p><strong>Quando:</strong> Patos pequenos e em hibernação profunda</p>
+                  <p>Malha energética expansiva inescapável</p>
+                </div>
+
+                <div className="strategy-item">
+                  <Tornado size={20} className="strategy-icon" />
+                  <h4>Inversão Gravitacional</h4>
+                  <p><strong>Quando:</strong> Patos muito altos ou com muitas mutações</p>
+                  <p>Manipulação de campo para imobilizar</p>
                 </div>
               </div>
 
               <div className="defense-section">
-                <h3>🛡️ Defesas Aleatórias Possíveis</h3>
+                <h3><Shield size={24} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> Defesas Possíveis</h3>
                 <div className="defenses-grid">
-                  <div className="defense-item">⚡ Escudo de Energia</div>
-                  <div className="defense-item">🎨 Campo de Camuflagem</div>
-                  <div className="defense-item">🌀 Explosão de Teletransporte</div>
-                  <div className="defense-item">🧠 Barreira Psíquica</div>
-                  <div className="defense-item">🔥 Proteção Elemental</div>
-                  <div className="defense-item">⏰ Distorção Temporal</div>
+                  <div className="defense-item"><Zap size={16} /> Escudo de Energia - Barreira energética deflectora</div>
+                  <div className="defense-item"><Eye size={16} /> Campo de Camuflagem - Invisibilidade temporária</div>
+                  <div className="defense-item"><Tornado size={16} /> Rajada de Teletransporte - Deslocamento instantâneo</div>
+                  <div className="defense-item"><Brain size={16} /> Barreira Psíquica - Proteção mental</div>
+                  <div className="defense-item"><Flame size={16} /> Proteção Elemental - Resistência natural</div>
+                  <div className="defense-item"><Clock size={16} /> Distorção Temporal - Manipulação do tempo</div>
+                  <div className="defense-item"><Shield size={16} /> Armadura Biológica - Tecido blindado regenerativo</div>
+                  <div className="defense-item"><Sparkles size={16} /> Reflexão Quântica - Espelhamento de ataques</div>
+                  <div className="defense-item"><TrendingUp size={16} /> Absorção Cinética - Conversão de impactos</div>
+                  <div className="defense-item"><Cpu size={16} /> Campo Magnético - Repulsão de projéteis</div>
+                  <div className="defense-item"><Zap size={16} /> Interferência Neural - Bloqueio de comandos</div>
+                  <div className="defense-item"><Flame size={16} /> Cúpula de Plasma - Barreira incineradora</div>
+                  <div className="defense-item"><Target size={16} /> Clonagem Defensiva - Cópias confusoras</div>
+                  <div className="defense-item"><Moon size={16} /> Prisão Dimensional - Bolsão espacial</div>
+                  <div className="defense-item"><Beaker size={16} /> Regeneração Acelerada - Cura instantânea</div>
                 </div>
-                <p className="defense-note">
-                  <AlertTriangle size={16} /> Uma defesa é gerada aleatoriamente para cada operação de captura
-                </p>
               </div>
 
               <div className="success-calculation">
-                <h3>📊 Cálculo da Taxa de Sucesso</h3>
+                <h3><Calculator size={24} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> Cálculo da Taxa de Sucesso</h3>
                 <ul>
                   <li><strong>Base:</strong> 50% de chance</li>
                   <li><strong>Drone:</strong> Bateria, Combustível e Integridade afetam (+/-20%)</li>

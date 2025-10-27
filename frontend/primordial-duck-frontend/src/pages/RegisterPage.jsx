@@ -54,7 +54,15 @@ const RegisterPage = () => {
       navigate('/dashboard');
     } catch (err) {
       console.error('Erro no registro:', err);
-      setError(err.response?.data?.message || 'Falha no alistamento. Tente novamente.');
+      if (err.errors && Array.isArray(err.errors)) {
+        setError(err.errors.join(', '));
+      } else if (err.message) {
+        setError(err.message);
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Falha no alistamento. Tente novamente.');
+      }
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import { useApiError } from '../hooks/useApiError';
 import ErrorMessage from './ErrorMessage';
 import { MapPin, Activity, Zap, Calendar } from 'lucide-react';
 import getDuckImage from '../utils/duckImageSelector';
+import assets from '../assets';
 import './PrimordialDuckList.css';
 
 const PrimordialDuckList = () => {
@@ -116,7 +117,7 @@ const PrimordialDuckList = () => {
                     <img
                       src={getDuckImage(getStatusName(duck.hibernationStatus), duck.mutationCount)}
                       alt={`Pato ${getStatusName(duck.hibernationStatus)}`}
-                      onError={(e) => e.target.src = '/assets/images/patos-primordiais/pato-desperto-1.png'}
+                      onError={(e) => e.target.src = assets.images.patos.patoDesperto1}
                     />
                   </div>
                   <div className="card-title">

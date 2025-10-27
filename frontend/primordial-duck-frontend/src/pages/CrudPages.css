@@ -102,6 +102,8 @@
 
 .data-grid {
   min-height: 400px;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .empty-state {
@@ -149,6 +151,10 @@
   min-height: 200px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .grid-card:hover {
@@ -266,6 +272,10 @@
   flex-direction: column;
   gap: 0.75rem;
   flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .info-row {
@@ -288,6 +298,10 @@
   font-size: 0.9rem;
   font-weight: 500;
   text-align: right;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .loading-container {
@@ -548,6 +562,11 @@
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 0.8rem;
+}
+
+.status-item span {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .status-bar {

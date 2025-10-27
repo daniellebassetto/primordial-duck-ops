@@ -153,7 +153,30 @@ const Dashboard = () => {
   };
 
   const renderChart = (data, title, colorKey = null) => {
-    const maxValue = Math.max(...Object.values(data));
+    if (!data || Object.keys(data).length === 0) {
+      return (
+        <div className="chart-container">
+          <h3>{title}</h3>
+          <div className="chart-empty">
+            <p>Nenhum dado disponível</p>
+          </div>
+        </div>
+      );
+    }
+
+    const values = Object.values(data);
+    const maxValue = Math.max(...values);
+
+    if (maxValue === 0) {
+      return (
+        <div className="chart-container">
+          <h3>{title}</h3>
+          <div className="chart-empty">
+            <p>Nenhum dado disponível</p>
+          </div>
+        </div>
+      );
+    }
 
     const getBarColor = (key) => {
       if (colorKey === 'status') return getStatusColor(key);
@@ -299,7 +322,11 @@ const Dashboard = () => {
             <h2>Mapa Global de Patos Primordiais</h2>
           </div>
           <div className="map-container">
-            {ducks.length > 0 && (
+            {ducks.length === 0 ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>
+                <p>Nenhum pato catalogado ainda</p>
+              </div>
+            ) : (
               <MapContainer
                 center={[0, 0]}
                 zoom={2}
@@ -316,7 +343,9 @@ const Dashboard = () => {
                   bounds={[[-90, -180], [90, 180]]}
                 />
                 {ducks.map((duck) => {
-                  if (!duck.location?.latitude || !duck.location?.longitude) return null;
+                  if (!duck.location?.latitude || !duck.location?.longitude) {
+                    return null;
+                  }
 
                   return (
                     <Marker

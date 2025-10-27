@@ -1,28 +1,27 @@
-const getDuckImage = (status, mutations) => {
-  const basePath = '/assets/images/patos-primordiais/';
+import assets from '../assets';
 
+const getDuckImage = (status, mutations) => {
   switch (status) {
     case 'Desperto':
       if (mutations >= 1 && mutations <= 2) {
-        return basePath + (mutations === 1 ? 'pato-desperto-1.png' : 'pato-desperto-2.png');
+        return mutations === 1 ? assets.images.patos.patoDesperto1 : assets.images.patos.patoDesperto2;
       } else if (mutations >= 3 && mutations <= 5) {
-        return basePath + 'pato-desperto-com-3+mutacoes.png';
+        return assets.images.patos.patoDesperto3Plus;
       } else if (mutations >= 6) {
-        return basePath + 'pato-desperto-com-6+mutacoes.png';
+        return assets.images.patos.patoDesperto6Plus;
       } else {
-        return basePath + 'pato-desperto-1.png';
+        return assets.images.patos.patoDesperto1;
       }
 
     case 'Em Transe':
-      return basePath + 'pato-em-transe-1.png';
+      return assets.images.patos.patoEmTranse1;
 
     case 'Hibernacao Profunda':
     case 'Hibernação Profunda':
-      const hibernationImages = ['pato-em-hibernacao-profunda-1.png', 'pato-em-hibernacao-profunda-2.png'];
-      return basePath + hibernationImages[mutations % 2];
+      return mutations % 2 === 0 ? assets.images.patos.patoHibernacao1 : assets.images.patos.patoHibernacao2;
 
     default:
-      return basePath + 'pato-desperto-1.png';
+      return assets.images.patos.patoDesperto1;
   }
 };
 

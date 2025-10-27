@@ -52,12 +52,32 @@ api.interceptors.response.use(
       throw netError;
     }
 
+    if (error.response?.status === 400 && error.response?.data?.errors) {
+      const validationErrors = [];
+      const errors = error.response.data.errors;
+
+      Object.keys(errors).forEach(field => {
+        const messages = errors[field];
+        if (Array.isArray(messages)) {
+          messages.forEach(msg => validationErrors.push(msg));
+        } else {
+          validationErrors.push(messages);
+        }
+      });
+
+      const apiError = new Error(error.response.data.title || 'Erro de validação');
+      apiError.errors = validationErrors;
+      apiError.status = error.response.status;
+      throw apiError;
+    }
+
     if (error.response?.data && typeof error.response.data === 'object' && 'success' in error.response.data) {
       const apiError = new Error(error.response.data.message || 'Erro na requisição');
       apiError.errors = error.response.data.errors;
       apiError.status = error.response.status;
       throw apiError;
     }
+
     throw error;
   }
 );
@@ -390,6 +410,16 @@ export const captureService = {
     }
   },
 
+  generateStrategy: async (requestData) => {
+    try {
+      const response = await api.post('/captureoperations/strategy', requestData);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao gerar estratégia:', error.message);
+      throw error;
+    }
+  },
+
   createOperation: async (operation) => {
     try {
       const response = await api.post('/captureoperations', operation);
@@ -412,12 +442,7 @@ export const captureService = {
 
   updateDroneStatus: async (droneId, statusData) => {
     try {
-      const payload = {
-        BatteryLevel: statusData.batteryLevel,
-        FuelLevel: statusData.fuelLevel,
-        Integrity: statusData.integrity
-      };
-      const response = await api.put(`/drones/${droneId}/status`, payload);
+      const response = await api.put(`/drones/${droneId}/status`, statusData);
       return response.data;
     } catch (error) {
       console.error('Erro ao atualizar status do drone:', error.message);
@@ -425,8 +450,5 @@ export const captureService = {
     }
   },
 };
-
-
-
 
 export { api };

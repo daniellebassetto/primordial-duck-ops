@@ -360,6 +360,20 @@
   gap: 0.75rem;
 }
 
+.chart-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+  border: 1px dashed #444;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.chart-empty p {
+  margin: 0;
+}
+
 .chart-bar-item {
   display: flex;
   flex-direction: column;

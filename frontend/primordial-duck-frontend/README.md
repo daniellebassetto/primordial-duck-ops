@@ -145,8 +145,6 @@ import { useAuth } from './contexts/AuthContext';
 
 function Component() {
   const { user, login, logout, isAuthenticated } = useAuth();
-  
-  // ...
 }
 ```
 
@@ -176,7 +174,6 @@ const api = axios.create({
   }
 });
 
-// Interceptor para adicionar token
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {

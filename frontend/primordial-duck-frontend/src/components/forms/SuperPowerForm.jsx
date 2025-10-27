@@ -15,7 +15,7 @@ const SuperPowerForm = ({ mode = 'create' }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    classification: 0
+    classification: SuperPowerClassification.WARLIKE
   });
 
   const isEdit = mode === 'edit' || (id && mode !== 'view');
@@ -48,10 +48,10 @@ const SuperPowerForm = ({ mode = 'create' }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isView) return;
-    
+
     setLoading(true);
     setErrors([]);
-    
+
     try {
       if (isEdit) {
         await superPowerService.update(id, formData);
@@ -60,8 +60,11 @@ const SuperPowerForm = ({ mode = 'create' }) => {
       }
       navigate('/superpowers');
     } catch (error) {
-      if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
+      console.error('Erro ao salvar super poder:', error);
+      if (error.errors && Array.isArray(error.errors)) {
+        setErrors(error.errors);
+      } else if (error.message) {
+        setErrors([error.message]);
       } else {
         setErrors([`Erro ao ${isEdit ? 'atualizar' : 'criar'} super poder. Tente novamente.`]);
       }
@@ -155,11 +158,11 @@ const SuperPowerForm = ({ mode = 'create' }) => {
           <div className="form-group">
             <label>Classificação *</label>
             {isView ? (
-              <input 
-                type="text" 
-                value={getClassificationName(formData.classification)} 
-                disabled 
-                readOnly 
+              <input
+                type="text"
+                value={getClassificationName(formData.classification)}
+                disabled
+                readOnly
               />
             ) : (
               <select

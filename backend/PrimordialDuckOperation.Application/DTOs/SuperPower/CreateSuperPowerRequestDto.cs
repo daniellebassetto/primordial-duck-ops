@@ -13,6 +13,6 @@ public record CreateSuperPowerRequestDto
     public string Description { get; init; } = string.Empty;
 
     [Required(ErrorMessage = "Classificação é obrigatória")]
-    [Range(0, 7, ErrorMessage = "Classificação deve estar entre 0 e 7")]
+    [Range(1, 8, ErrorMessage = "Classificação deve estar entre 1 (Bélico) e 8 (Dimensional)")]
     public int Classification { get; init; }
 }

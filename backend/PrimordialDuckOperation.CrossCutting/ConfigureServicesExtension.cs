@@ -47,6 +47,7 @@ public static class ConfigureServicesExtension
     {
         ServiceCollection.AddControllers().AddNewtonsoftJson(options =>
         {
+            options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
             options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             options.SerializerSettings.Formatting = Formatting.Indented;
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

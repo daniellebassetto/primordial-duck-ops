@@ -448,6 +448,9 @@ textarea:disabled {
   font-size: 1rem;
   transition: all 0.3s ease;
   font-family: 'Courier New', monospace;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .form-group select option {
@@ -467,6 +470,10 @@ textarea:disabled {
 .form-group textarea {
   resize: vertical;
   min-height: 100px;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .btn {

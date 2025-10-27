@@ -25,17 +25,18 @@ public static class PrimordialDuckConstants
     public static class ErrorMessages
     {
         public const string HeightCentimetersOutOfRange = "Altura deve estar entre 80cm e 5000cm";
-        public const string HeightFeetOutOfRange = "Altura deve estar entre 2.62 e 164.04 pÈs";
+        public const string HeightFeetOutOfRange = "Altura deve estar entre 2.62 e 164.04 p√©s";
         public const string WeightGramsOutOfRange = "Peso deve estar entre 5000g e 350000g";
         public const string WeightPoundsOutOfRange = "Peso deve estar entre 11.02 e 771.62 libras";
-        public const string GpsPrecisionCentimetersOutOfRange = "Precis„o GPS deve estar entre 4cm e 3000cm";
-        public const string GpsPrecisionMetersOutOfRange = "Precis„o GPS deve estar entre 0.04m e 30m";
-        public const string GpsPrecisionYardsOutOfRange = "Precis„o GPS deve estar entre 0.044 jardas e 32.8 jardas";
-        public const string OnlyIdentificationDronesAllowed = "Apenas drones de identificaÁ„o podem ser usados no cadastro de patos primordiais";
-        public const string CannotDeleteDuckWithOperations = "N„o È possÌvel excluir este Pato Primordial pois existe uma operaÁ„o de captura associada a ele.";
-        public const string DroneNotFound = "O drone informado n„o existe";
-        public const string SuperPowerNotFound = "O super poder informado n„o existe";
+        public const string GpsPrecisionCentimetersOutOfRange = "Precis√£o GPS deve estar entre 4cm e 3000cm";
+        public const string GpsPrecisionMetersOutOfRange = "Precis√£o GPS deve estar entre 0.04m e 30m";
+        public const string GpsPrecisionYardsOutOfRange = "Precis√£o GPS deve estar entre 0.044 jardas e 32.8 jardas";
+        public const string OnlyIdentificationDronesAllowed = "Apenas drones de identifica√ß√£o podem ser usados no cadastro de patos primordiais";
+        public const string CannotDeleteDuckWithOperations = "N√£o √© poss√≠vel excluir este Pato Primordial pois existe uma opera√ß√£o de captura associada a ele.";
+        public const string DroneNotFound = "O drone informado n√£o existe";
+        public const string SuperPowerNotFound = "O super poder informado n√£o existe";
         public const string AwakeDuckRequiresSuperPower = "Patos primordiais no estado Desperto devem ter um super poder informado";
+        public const string DormantDuckRequiresHeartRate = "Batimentos card√≠acos s√£o obrigat√≥rios para patos em transe ou hiberna√ß√£o profunda";
     }
 
     public static class SortFields
@@ -43,5 +44,12 @@ public static class PrimordialDuckConstants
         public const string HibernationStatus = "hibernationstatus";
         public const string MutationCount = "mutationcount";
         public const string DiscoveredAt = "discoveredat";
+    }
+
+    public static class HibernationStatusDescriptions
+    {
+        public const string Awake = "Desperto";
+        public const string InTrance = "Hiberna√ß√£o Leve";
+        public const string DeepHibernation = "Hiberna√ß√£o Profunda";
     }
 }

@@ -45,40 +45,28 @@ const CaptureOperationPage = () => {
     }
   };
 
-  const generateStrategy = () => {
+  const generateStrategy = async () => {
     if (!selectedDrone || !selectedDuck) return;
 
-    const strategies = [
-      "Aproximação silenciosa com rede de contenção",
-      "Cerco tático aéreo com drone auxiliar",
-      "Ataque surpresa com dispositivo atordoante",
-      "Manobra de flanqueamento lateral",
-      "Descida vertical com captura por garra mecânica",
-      "Interceptação em movimento com rede expansiva"
-    ];
+    try {
+      setLoading(true);
+      const strategyData = await captureService.generateStrategy({
+        droneId: selectedDrone.id,
+        primordialDuckId: selectedDuck.id
+      });
 
-    const defenses = [
-      "Emissão de pulso eletromagnético defensivo",
-      "Barreira energética temporária",
-      "Camuflagem holográfica avançada",
-      "Rajada de vento com batida de asas",
-      "Explosão de penas metálicas",
-      "Campo de distorção espacial",
-      "Grasnado ultrassônico paralisante",
-      "Teletransporte de curta distância",
-      "Escudo plasmático reflexivo",
-      "Ilusões ópticas múltiplas"
-    ];
-
-    let successChance = 60;
-    if (selectedDuck.hibernationStatus === 'Hibernação Profunda') successChance += 20;
-    if (selectedDuck.hibernationStatus === 'Desperto') successChance -= 15;
-
-    setStrategy({
-      strategy: strategies[Math.floor(Math.random() * strategies.length)],
-      defenseGenerated: defenses[Math.floor(Math.random() * defenses.length)],
-      successChance: Math.max(10, Math.min(90, successChance))
-    });
+      setStrategy({
+        strategy: strategyData.strategy,
+        defenseGenerated: strategyData.defenseGenerated,
+        successChance: strategyData.successChance,
+        reasoning: strategyData.reasoning
+      });
+    } catch (error) {
+      console.error('Erro ao gerar estratégia:', error);
+      alert('Erro ao gerar estratégia. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCaptureComplete = async (success, message, captureResult = null) => {
@@ -256,8 +244,11 @@ const CaptureOperationPage = () => {
               <h3><Brain size={20} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} /> Estratégia Gerada</h3>
               <div className="strategy-content">
                 <p><strong>Ataque:</strong> {strategy.strategy}</p>
-                <p><strong>Defesa:</strong> {strategy.defenseGenerated}</p>
+                <p><strong>Defesa do Alvo:</strong> {strategy.defenseGenerated}</p>
                 <p><strong>Chance de Sucesso:</strong> {strategy.successChance}%</p>
+                {strategy.reasoning && (
+                  <p className="strategy-reasoning"><strong>Análise:</strong> {strategy.reasoning}</p>
+                )}
               </div>
             </div>
           )}

@@ -223,6 +223,15 @@ public class CaptureOperationService(ICaptureOperationRepository captureOperatio
             CaptureStrategyEnum.DistractionTactic => CaptureOperationConstants.StrategyDescriptions.DistractionTactic,
             CaptureStrategyEnum.AerialBombardment => CaptureOperationConstants.StrategyDescriptions.AerialBombardment,
             CaptureStrategyEnum.UnderwaterAmbush => CaptureOperationConstants.StrategyDescriptions.UnderwaterAmbush,
+            CaptureStrategyEnum.TacticalSiege => CaptureOperationConstants.StrategyDescriptions.TacticalSiege,
+            CaptureStrategyEnum.SilentInfiltration => CaptureOperationConstants.StrategyDescriptions.SilentInfiltration,
+            CaptureStrategyEnum.LightningStrike => CaptureOperationConstants.StrategyDescriptions.LightningStrike,
+            CaptureStrategyEnum.FlankingManeuver => CaptureOperationConstants.StrategyDescriptions.FlankingManeuver,
+            CaptureStrategyEnum.AreaSuppression => CaptureOperationConstants.StrategyDescriptions.AreaSuppression,
+            CaptureStrategyEnum.HolographicDecoy => CaptureOperationConstants.StrategyDescriptions.HolographicDecoy,
+            CaptureStrategyEnum.SonicPulse => CaptureOperationConstants.StrategyDescriptions.SonicPulse,
+            CaptureStrategyEnum.ContainmentNet => CaptureOperationConstants.StrategyDescriptions.ContainmentNet,
+            CaptureStrategyEnum.GravityInversion => CaptureOperationConstants.StrategyDescriptions.GravityInversion,
             _ => CaptureOperationConstants.StrategyDescriptions.Unknown
         };
     }
@@ -237,6 +246,15 @@ public class CaptureOperationService(ICaptureOperationRepository captureOperatio
             DefenseTypeEnum.PsychicBarrier => CaptureOperationConstants.DefenseDescriptions.PsychicBarrier,
             DefenseTypeEnum.ElementalWard => CaptureOperationConstants.DefenseDescriptions.ElementalWard,
             DefenseTypeEnum.TimeDistortion => CaptureOperationConstants.DefenseDescriptions.TimeDistortion,
+            DefenseTypeEnum.BiologicalArmor => CaptureOperationConstants.DefenseDescriptions.BiologicalArmor,
+            DefenseTypeEnum.QuantumReflection => CaptureOperationConstants.DefenseDescriptions.QuantumReflection,
+            DefenseTypeEnum.KineticAbsorption => CaptureOperationConstants.DefenseDescriptions.KineticAbsorption,
+            DefenseTypeEnum.MagneticField => CaptureOperationConstants.DefenseDescriptions.MagneticField,
+            DefenseTypeEnum.NeuralInterference => CaptureOperationConstants.DefenseDescriptions.NeuralInterference,
+            DefenseTypeEnum.PlasmaDome => CaptureOperationConstants.DefenseDescriptions.PlasmaDome,
+            DefenseTypeEnum.DefensiveCloning => CaptureOperationConstants.DefenseDescriptions.DefensiveCloning,
+            DefenseTypeEnum.DimensionalPrison => CaptureOperationConstants.DefenseDescriptions.DimensionalPrison,
+            DefenseTypeEnum.AcceleratedRegeneration => CaptureOperationConstants.DefenseDescriptions.AcceleratedRegeneration,
             _ => CaptureOperationConstants.DefenseDescriptions.Unknown
         };
     }

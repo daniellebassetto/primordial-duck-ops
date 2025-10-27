@@ -70,5 +70,4 @@ public class PrimordialDuck : BaseEntity<PrimordialDuck>
     public decimal HeightInCentimeters => Height.ToCentimeters();
     public decimal WeightInGrams => Weight.ToGrams();
     public decimal PrecisionInCentimeters => GpsPrecision.ToCentimeters();
-
 }

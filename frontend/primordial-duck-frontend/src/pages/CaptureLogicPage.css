@@ -1,42 +1,67 @@
 .capture-logic-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-  color: #e2e8f0;
-  font-family: 'Courier New', monospace;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.capture-logic-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(74, 90, 58, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212, 97, 10, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(26, 35, 50, 0.05) 0%, transparent 60%),
+    linear-gradient(135deg, #0a0a0a 0%, #1a2332 30%, #1a1a1a 70%, #0a0a0a 100%);
+  z-index: -1;
 }
 
 .page-header {
-  background: rgba(76, 175, 80, 0.1);
-  border-bottom: 2px solid rgba(76, 175, 80, 0.3);
-  padding: 2rem 0;
+  text-align: center;
   margin-bottom: 2rem;
+  padding: 2rem 0;
+  border-bottom: 2px solid #333;
 }
 
 .header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
 }
 
 .header-icon {
-  color: #4CAF50;
-  filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.5));
+  color: var(--tactical-orange);
+  filter: drop-shadow(0 0 10px rgba(212, 97, 10, 0.5));
 }
 
 .page-header h1 {
-  margin: 0;
-  color: #4CAF50;
-  font-size: 2rem;
-  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+  color: var(--tactical-orange);
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  text-shadow:
+    0 0 20px rgba(212, 97, 10, 0.8),
+    0 0 40px rgba(212, 97, 10, 0.5),
+    2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .page-header p {
-  margin: 0.5rem 0 0 0;
-  color: #a5d6a7;
-  opacity: 0.9;
+  color: var(--sand-tan);
+  font-size: 1rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .logic-container {
@@ -50,24 +75,30 @@
 }
 
 .intro-card {
-  background: rgba(76, 175, 80, 0.05);
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.2) 0%,
+      rgba(0, 0, 0, 0.8) 50%,
+      rgba(26, 35, 50, 0.2) 100%);
+  border: 2px solid rgba(212, 97, 10, 0.3);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .intro-icon {
-  color: #4CAF50;
+  color: var(--tactical-orange);
   margin-bottom: 1rem;
-  filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.5));
+  filter: drop-shadow(0 0 10px rgba(212, 97, 10, 0.5));
 }
 
 .intro-card h2 {
-  color: #4CAF50;
+  color: var(--tactical-orange);
   margin-bottom: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .metrics-explanation {
@@ -83,12 +114,16 @@
 }
 
 .metric-explanation {
-  background: rgba(76, 175, 80, 0.05);
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.15) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      rgba(26, 35, 50, 0.15) 100%);
+  border: 2px solid rgba(212, 97, 10, 0.2);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .metric-header {
@@ -450,75 +485,114 @@
 }
 
 .strategy-item {
-  background: rgba(33, 150, 243, 0.1);
-  border: 1px solid rgba(33, 150, 243, 0.2);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.15) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(26, 35, 50, 0.15) 100%);
+  border: 2px solid rgba(212, 97, 10, 0.2);
   border-radius: 8px;
   padding: 1rem;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .strategy-item:hover {
-  background: rgba(33, 150, 243, 0.15);
-  border-color: rgba(33, 150, 243, 0.4);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.25) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      rgba(26, 35, 50, 0.25) 100%);
+  border-color: rgba(212, 97, 10, 0.4);
   transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(212, 97, 10, 0.2);
+}
+
+.strategy-icon {
+  color: var(--tactical-orange);
+  filter: drop-shadow(0 0 8px rgba(212, 97, 10, 0.4));
+  align-self: flex-start;
 }
 
 .strategy-item h4 {
-  color: #64b5f6;
-  margin: 0 0 0.5rem 0;
+  color: var(--tactical-orange);
+  margin: 0;
   font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .strategy-item p {
   margin: 0.3rem 0;
-  color: #b3d9ff;
+  color: var(--sand-tan);
   font-size: 0.9rem;
   line-height: 1.4;
 }
 
 .strategy-item p strong {
-  color: #90caf9;
+  color: var(--tactical-orange);
 }
 
 .defense-section {
-  background: rgba(156, 39, 176, 0.1);
-  border: 1px solid rgba(156, 39, 176, 0.3);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.15) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      rgba(26, 35, 50, 0.15) 100%);
+  border: 2px solid rgba(74, 90, 58, 0.3);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .defense-section h3 {
-  color: #ba68c8;
+  color: var(--olive-green);
   margin: 0 0 1rem 0;
   font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .defenses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.8rem;
   margin-bottom: 1rem;
 }
 
 .defense-item {
-  background: rgba(156, 39, 176, 0.1);
-  border: 1px solid rgba(156, 39, 176, 0.2);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.2) 0%,
+      rgba(0, 0, 0, 0.6) 100%);
+  border: 2px solid rgba(74, 90, 58, 0.3);
   padding: 0.8rem;
   border-radius: 6px;
-  color: #ce93d8;
-  text-align: center;
+  color: var(--sand-tan);
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .defense-item:hover {
-  background: rgba(156, 39, 176, 0.2);
-  border-color: rgba(156, 39, 176, 0.4);
+  background: linear-gradient(135deg,
+      rgba(74, 90, 58, 0.3) 0%,
+      rgba(0, 0, 0, 0.7) 100%);
+  border-color: rgba(74, 90, 58, 0.5);
+  transform: translateX(4px);
+  box-shadow: 0 4px 8px rgba(74, 90, 58, 0.2);
+}
+
+.defense-item svg {
+  color: var(--olive-green);
+  flex-shrink: 0;
 }
 
 .defense-note {
-  color: #ba68c8;
+  color: var(--olive-green);
   font-size: 0.85rem;
   margin: 1rem 0 0 0;
   display: flex;

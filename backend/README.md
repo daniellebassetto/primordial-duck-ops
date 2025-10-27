@@ -141,19 +141,6 @@ backend/
 - ✅ **Value Objects**: Mapeados como Owned Types
 - ✅ **Índices**: Otimização de consultas
 
-Exemplo:
-```csharp
-// Classe C#
-public class PrimordialDuck
-{
-    public HeightMeasurement Height { get; set; }
-}
-
-// Banco de dados
-Tabela: PatosPrimordiais
-Colunas: Altura_Valor, Altura_UnidadeDeMedida
-```
-
 #### **Migrations**:
 - `InitialCreate` - Criação inicial do schema
 - Migrations automáticas via EF Core
