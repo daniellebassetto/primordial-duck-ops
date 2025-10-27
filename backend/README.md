@@ -1,17 +1,16 @@
 # 🔧 Backend - Primordial Duck Operation API
 
-API RESTful construída com **.NET 9** e **Clean Architecture/DDD** para gerenciamento completo do sistema de catalogação e captura de Patos Primordiais.
+API REST construída com **.NET 9** e **Clean Architecture/DDD** para gerenciamento completo do sistema de catalogação e captura de Patos Primordiais.
 
 ---
 
-## � Acesso à API
+## Acesso à API
 
 - **Swagger (Produção)**: http://172.172.122.181:7000/swagger/index.html
-- **Endpoint Base**: http://172.172.122.181:7000/api
 
 ---
 
-## �🏗️ Arquitetura do Backend
+## 🏗️ Arquitetura do Backend
 
 ### **Clean Architecture / Domain-Driven Design (DDD)**
 
@@ -253,48 +252,6 @@ backend/
 
 ---
 
-## 📡 Padrões de API
-
-### **Nomenclatura de Endpoints**
-```
-GET    /api/primordialducks        - Lista todos
-GET    /api/primordialducks/{id}   - Busca por ID
-POST   /api/primordialducks        - Cria novo
-PUT    /api/primordialducks/{id}   - Atualiza
-DELETE /api/primordialducks/{id}   - Remove
-```
-
-### **Formato de Respostas**
-
-**Sucesso (200 OK)**:
-```json
-{
-  "id": 1,
-  "name": "Pato Alfa",
-  ...
-}
-```
-
-**Erro (400 Bad Request)**:
-```json
-{
-  "message": "Dados inválidos",
-  "errors": {
-    "Height": ["A altura é obrigatória"]
-  }
-}
-```
-
-**Erro (500 Internal Server Error)**:
-```json
-{
-  "message": "Erro interno do servidor",
-  "details": "..."
-}
-```
-
----
-
 ## 🚀 Como Executar
 
 ### **Opção 1: Docker (Recomendado)**
@@ -401,61 +358,6 @@ dotnet watch run --project PrimordialDuckOperation.Api
 - HTTP: `http://localhost:7000`
 - HTTPS: `https://localhost:7001`
 - Swagger: `http://localhost:7000/swagger`
-
----
-
-## 🔧 Comandos Úteis
-
-### **Entity Framework Core**
-
-```bash
-# Criar nova migration
-dotnet ef migrations add NomeDaMigration --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
-
-# Aplicar migrations
-dotnet ef database update --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
-
-# Reverter última migration
-dotnet ef migrations remove --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
-
-# Gerar script SQL
-dotnet ef migrations script --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
-```
-
-### **Build e Testes**
-
-```bash
-# Build da solution
-dotnet build
-
-# Limpar builds anteriores
-dotnet clean
-
-# Executar testes
-dotnet test
-
-# Executar com cobertura
-dotnet test /p:CollectCoverage=true
-
-# Publicar para produção
-dotnet publish -c Release -o ./publish
-```
-
----
-
-## 🧪 Testes
-
-```bash
-# Executar todos os testes
-dotnet test
-
-# Executar com cobertura
-dotnet test /p:CollectCoverage=true
-
-# Executar testes de um projeto específico
-dotnet test PrimordialDuckOperation.Tests
-```
-
 
 ---
 
