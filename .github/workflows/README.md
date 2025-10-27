@@ -155,7 +155,7 @@ O deploy é executado automaticamente quando:
 
 O workflow verifica automaticamente:
 - ✅ API está respondendo na porta 7000
-- ✅ Frontend está acessível na porta 80
+- ✅ Frontend está acessível na porta 8080
 - ✅ Containers estão rodando corretamente
 
 ## 🔍 Monitoramento

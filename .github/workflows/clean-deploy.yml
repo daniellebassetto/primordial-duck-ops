@@ -243,7 +243,7 @@ jobs:
               image: ghcr.io/${{ github.repository }}/frontend:latest
               container_name: pdo-frontend
               ports:
-                - "80:80"
+                - "8080:80"
               depends_on:
                 - api
               networks:
@@ -298,7 +298,7 @@ jobs:
           echo "✅ Deploy completo finalizado com sucesso!"
           echo ""
           echo "🌐 Acesse a aplicação em:"
-          echo "   Frontend: http://${{ secrets.AZURE_VM_HOST }}/"
+          echo "   Frontend: http://${{ secrets.AZURE_VM_HOST }}:8080"
           echo "   API: http://${{ secrets.AZURE_VM_HOST }}:7000"
           echo "   Swagger: http://${{ secrets.AZURE_VM_HOST }}:7000/swagger"
           EOF
@@ -351,8 +351,8 @@ jobs:
           fi
           
           # Check Frontend
-          echo "Verificando Frontend em $API_HOST:80..."
-          if timeout 15 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/80" 2>/dev/null; then
+          echo "Verificando Frontend em $API_HOST:8080..."
+          if timeout 15 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/8080" 2>/dev/null; then
             echo "✅ Frontend está acessível!"
           else
             echo "⚠️ Frontend não respondeu (pode ainda estar inicializando...)"
@@ -366,7 +366,7 @@ jobs:
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo ""
           echo "🌐 URLs da Aplicação:"
-          echo "   Frontend: http://${{ secrets.AZURE_VM_HOST }}/"
+          echo "   Frontend: http://${{ secrets.AZURE_VM_HOST }}:8080"
           echo "   API: http://${{ secrets.AZURE_VM_HOST }}:7000/api"
           echo "   Swagger: http://${{ secrets.AZURE_VM_HOST }}:7000/swagger"
           echo ""

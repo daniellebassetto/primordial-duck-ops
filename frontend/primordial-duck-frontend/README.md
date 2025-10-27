@@ -7,7 +7,7 @@ Interface web moderna construída com **React 19** e **Vite 7** para gerenciamen
 ## Acesso à Aplicação
 
 ### **Ambiente de Produção**
-- **Interface Web**: http://172.172.122.181/
+- **Interface Web**: http://172.172.122.181:8080
 
 ### **Ambiente Local**
 - **Desenvolvimento (Vite)**: http://localhost:3000
