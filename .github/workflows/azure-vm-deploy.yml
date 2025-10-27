@@ -106,7 +106,10 @@ jobs:
           # Variables
           REGISTRY="ghcr.io"
           REPO_OWNER="${{ github.repository_owner }}"
+          REPO_NAME="${{ github.repository }}"
           PROJECT_DIR="/opt/primordial-duck-operation"
+          BACKEND_IMAGE="ghcr.io/$REPO_NAME/backend:latest"
+          FRONTEND_IMAGE="ghcr.io/$REPO_NAME/frontend:latest"
           
           # Create project directory if it doesn't exist
           sudo mkdir -p $PROJECT_DIR
@@ -117,8 +120,8 @@ jobs:
 
           # Pull latest images
           echo "📦 Pulling latest Docker images..."
-          docker pull $REGISTRY/${{ github.repository }}/backend:latest
-          docker pull $REGISTRY/${{ github.repository }}/frontend:latest
+          docker pull $BACKEND_IMAGE
+          docker pull $FRONTEND_IMAGE
 
           # Stop and remove old containers
           echo "🛑 Stopping existing containers..."
@@ -126,8 +129,6 @@ jobs:
 
           # Copy new docker-compose file
           cat > docker-compose.yml << 'DOCKER_COMPOSE'
-          version: '3.8'
-
           services:
             mysql:
               image: mysql:8.0
@@ -156,7 +157,7 @@ jobs:
                     memory: 256M
 
             api:
-              image: $REGISTRY/${{ github.repository }}/backend:latest
+              image: ghcr.io/${{ github.repository }}/backend:latest
               container_name: pdo-api
               ports:
                 - "7000:8080"
@@ -182,7 +183,7 @@ jobs:
                     memory: 256M
 
             frontend:
-              image: $REGISTRY/${{ github.repository }}/frontend:latest
+              image: ghcr.io/${{ github.repository }}/frontend:latest
               container_name: pdo-frontend
               ports:
                 - "80:80"
@@ -213,7 +214,7 @@ jobs:
 
           # Wait for services to be healthy
           echo "⏳ Waiting for services to start..."
-          sleep 10
+          sleep 15
 
           # Show container status
           echo "📊 Container status:"
