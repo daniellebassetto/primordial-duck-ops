@@ -41,3 +41,19 @@ docker-compose.override.yml
 # Backups
 *.sql
 backup/
+
+# GitHub Actions - Deploy Scripts (arquivos temporários)
+.github/workflows/deploy/
+.github/workflows/scripts/*.log
+.github/workflows/scripts/.env
+
+# SSH Keys e Certificados
+*.pem
+*.pub
+*.ppk
+id_rsa*
+azure_vm_deploy*
+
+# Arquivos de configuração local
+docker-compose.local.yml
+docker-compose.override.yml

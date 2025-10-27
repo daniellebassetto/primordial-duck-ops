@@ -13,7 +13,6 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - pdo-network
-    # Otimizações para VM pequena
     command: --default-authentication-plugin=mysql_native_password --max_connections=50 --innodb_buffer_pool_size=128M
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-primordial@duck2025}"]
@@ -21,7 +20,6 @@ services:
       retries: 10
       interval: 10s
     restart: unless-stopped
-    # Limitar recursos para B1ms
     deploy:
       resources:
         limits:
@@ -46,7 +44,6 @@ services:
     networks:
       - pdo-network
     restart: unless-stopped
-    # Limitar recursos
     deploy:
       resources:
         limits:
@@ -71,7 +68,6 @@ services:
     networks:
       - pdo-network
     restart: unless-stopped
-    # Limitar recursos
     deploy:
       resources:
         limits:

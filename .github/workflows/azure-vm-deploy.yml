@@ -1,0 +1,324 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
+  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Backend
+        id: meta-backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Extract metadata for Frontend
+        id: meta-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push Frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend/primordial-duck-frontend
+          file: ./frontend/primordial-duck-frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+            VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+            VITE_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Azure VM
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create deployment package
+        run: |
+          mkdir -p deploy
+          cp docker-compose.production.yml deploy/docker-compose.yml
+          cp .github/workflows/scripts/deploy.sh deploy/ || echo "#!/bin/bash" > deploy/deploy.sh
+
+      - name: Create deploy script
+        run: |
+          cat > deploy/deploy.sh << 'EOF'
+          #!/bin/bash
+          set -e
+
+          echo "🚀 Starting deployment process..."
+
+          # Variables
+          REGISTRY="ghcr.io"
+          REPO_OWNER="${{ github.repository_owner }}"
+          PROJECT_DIR="/opt/primordial-duck-operation"
+          
+          # Create project directory if it doesn't exist
+          sudo mkdir -p $PROJECT_DIR
+          cd $PROJECT_DIR
+
+          # Login to GitHub Container Registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
+
+          # Pull latest images
+          echo "📦 Pulling latest Docker images..."
+          docker pull $REGISTRY/${{ github.repository }}/backend:latest
+          docker pull $REGISTRY/${{ github.repository }}/frontend:latest
+
+          # Stop and remove old containers
+          echo "🛑 Stopping existing containers..."
+          docker-compose down || true
+
+          # Copy new docker-compose file
+          cat > docker-compose.yml << 'DOCKER_COMPOSE'
+          version: '3.8'
+
+          services:
+            mysql:
+              image: mysql:8.0
+              container_name: pdo-mysql
+              environment:
+                MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+                MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+              ports:
+                - "3307:3306"
+              volumes:
+                - mysql_data:/var/lib/mysql
+              networks:
+                - pdo-network
+              command: --default-authentication-plugin=mysql_native_password --max_connections=50 --innodb_buffer_pool_size=128M
+              healthcheck:
+                test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${{ secrets.MYSQL_ROOT_PASSWORD }}"]
+                timeout: 20s
+                retries: 10
+                interval: 10s
+              restart: unless-stopped
+              deploy:
+                resources:
+                  limits:
+                    memory: 512M
+                  reservations:
+                    memory: 256M
+
+            api:
+              image: $REGISTRY/${{ github.repository }}/backend:latest
+              container_name: pdo-api
+              ports:
+                - "7000:8080"
+              depends_on:
+                mysql:
+                  condition: service_healthy
+              environment:
+                - ASPNETCORE_ENVIRONMENT=Production
+                - ASPNETCORE_URLS=http://+:8080
+                - ConnectionStrings__DefaultConnection=Server=mysql;Database=${{ secrets.MYSQL_DATABASE }};User=root;Password=${{ secrets.MYSQL_ROOT_PASSWORD }};
+                - JwtSettings__Secret=${{ secrets.JWT_SECRET }}
+                - JwtSettings__Issuer=${{ secrets.JWT_ISSUER }}
+                - JwtSettings__Audience=${{ secrets.JWT_AUDIENCE }}
+                - JwtSettings__ExpirationInMinutes=${{ secrets.JWT_EXPIRATION_MINUTES }}
+              networks:
+                - pdo-network
+              restart: unless-stopped
+              deploy:
+                resources:
+                  limits:
+                    memory: 512M
+                  reservations:
+                    memory: 256M
+
+            frontend:
+              image: $REGISTRY/${{ github.repository }}/frontend:latest
+              container_name: pdo-frontend
+              ports:
+                - "80:80"
+                - "443:443"
+              depends_on:
+                - api
+              networks:
+                - pdo-network
+              restart: unless-stopped
+              deploy:
+                resources:
+                  limits:
+                    memory: 256M
+                  reservations:
+                    memory: 128M
+
+          networks:
+            pdo-network:
+              driver: bridge
+
+          volumes:
+            mysql_data:
+          DOCKER_COMPOSE
+
+          # Start new containers
+          echo "🚀 Starting new containers..."
+          docker-compose up -d
+
+          # Wait for services to be healthy
+          echo "⏳ Waiting for services to start..."
+          sleep 10
+
+          # Show container status
+          echo "📊 Container status:"
+          docker-compose ps
+
+          # Cleanup old images
+          echo "🧹 Cleaning up old images..."
+          docker image prune -f
+
+          # Logout from registry
+          docker logout $REGISTRY
+
+          echo "✅ Deployment completed successfully!"
+          EOF
+
+          chmod +x deploy/deploy.sh
+
+      - name: Copy files to Azure VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: ${{ secrets.AZURE_VM_SSH_PORT || 22 }}
+          source: "deploy/*"
+          target: "/tmp/primordial-duck-deploy"
+          strip_components: 1
+
+      - name: Deploy on Azure VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: ${{ secrets.AZURE_VM_SSH_PORT || 22 }}
+          script: |
+            cd /tmp/primordial-duck-deploy
+            chmod +x deploy.sh
+            ./deploy.sh
+
+      - name: Health Check
+        run: |
+          echo "🏥 Performing health checks..."
+          
+          # Wait for services to be fully up
+          sleep 30
+          
+          # Check API health
+          API_URL="http://${{ secrets.AZURE_VM_HOST }}:7000/health"
+          echo "Checking API at $API_URL"
+          
+          for i in {1..5}; do
+            if curl -f -s -o /dev/null -w "%{http_code}" $API_URL | grep -q "200"; then
+              echo "✅ API is healthy!"
+              break
+            else
+              echo "⏳ Waiting for API... (attempt $i/5)"
+              sleep 10
+            fi
+          done
+          
+          # Check Frontend
+          FRONTEND_URL="http://${{ secrets.AZURE_VM_HOST }}"
+          echo "Checking Frontend at $FRONTEND_URL"
+          
+          if curl -f -s -o /dev/null -w "%{http_code}" $FRONTEND_URL | grep -q "200"; then
+            echo "✅ Frontend is healthy!"
+          else
+            echo "⚠️ Frontend health check failed"
+          fi
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment to Azure VM completed successfully!"
+            echo "🌐 Application URL: http://${{ secrets.AZURE_VM_HOST }}"
+            echo "🔧 API URL: http://${{ secrets.AZURE_VM_HOST }}:7000"
+          else
+            echo "❌ Deployment failed. Check the logs for details."
+          fi
+
+  cleanup:
+    name: Cleanup old packages
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+    permissions:
+      packages: write
+    
+    steps:
+      - name: Delete old container images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'backend'
+          package-type: 'container'
+          min-versions-to-keep: 5
+          delete-only-untagged-versions: 'true'
+        continue-on-error: true
+
+      - name: Delete old frontend images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'frontend'
+          package-type: 'container'
+          min-versions-to-keep: 5
+          delete-only-untagged-versions: 'true'
+        continue-on-error: true
