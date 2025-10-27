@@ -4,13 +4,13 @@ Interface web moderna construída com **React 19** e **Vite 7** para gerenciamen
 
 ---
 
-## � Acesso à Aplicação
+## Acesso à Aplicação
 
 - **Interface Web (Produção)**: http://172.172.122.181:8080/
 
 ---
 
-## �🏗️ Arquitetura do Frontend
+## 🏗️ Arquitetura do Frontend
 
 ### **Component-Based Architecture**
 
@@ -308,7 +308,7 @@ npm run dev
 yarn dev
 
 # 5. Acessar aplicação
-# URL: http://localhost:5173
+# URL: http://localhost:3000
 ```
 
 **Build para Produção**:
@@ -327,35 +327,13 @@ yarn preview
 
 ---
 
-## 🔧 Scripts Disponíveis
-
-```bash
-# Desenvolvimento com hot-reload
-npm run dev
-
-# Build para produção
-npm run build
-
-# Preview do build de produção
-npm run preview
-
-# Lint do código
-npm run lint
-
-# Formatar código
-npm run format
-```
-
----
-VITE_EMAILJS_PUBLIC_KEY=sua_public_key
 
 # 4. Execute em modo desenvolvimento
 npm run dev
 # ou
 yarn dev
 
-# Frontend estará disponível em: http://localhost:5173
-```
+## Frontend estará disponível em: http://localhost:3000
 
 ---
 
@@ -376,7 +354,6 @@ yarn preview
 
 # Preview estará em: http://localhost:4173
 ```
-
 ---
 
 ## 🔧 Configuração de Ambiente
@@ -697,17 +674,6 @@ VITE_API_URL=http://localhost:7000/api
 ```env
 VITE_API_URL=http://172.172.122.181:7000/api
 ```
-
----
-
-## 🧪 Testes (Futuro)
-
-### **Planejado**
-- ✅ **Jest** - Framework de testes
-- ✅ **React Testing Library** - Testes de componentes
-- ✅ **Vitest** - Testes unitários com Vite
-- ✅ **Cypress** - Testes E2E
-
 ---
 
 ## 📚 Referências e Recursos
@@ -742,21 +708,6 @@ VITE_API_URL=http://172.172.122.181:7000/api
 ```
 
 **Rotas Protegidas**: Requerem autenticação JWT. Redirecionam para /login se não autenticado.
-
----
-
-## 🧪 Testes (Futuro)
-
-```bash
-# Testes unitários com Vitest
-npm run test
-
-# Testes E2E com Playwright
-npm run test:e2e
-
-# Cobertura
-npm run test:coverage
-```
 
 ---
 
