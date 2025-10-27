@@ -52,6 +52,16 @@ api.interceptors.response.use(
       throw netError;
     }
 
+    if (error.response?.status === 401) {
+      const message = error.response?.data?.message ||
+        error.response?.data?.Message ||
+        'Usuário ou senha inválidos. Verifique suas credenciais.';
+      const apiError = new Error(message);
+      apiError.status = 401;
+      apiError.isAuthError = true;
+      throw apiError;
+    }
+
     if (error.response?.status === 400 && error.response?.data?.errors) {
       const validationErrors = [];
       const errors = error.response.data.errors;

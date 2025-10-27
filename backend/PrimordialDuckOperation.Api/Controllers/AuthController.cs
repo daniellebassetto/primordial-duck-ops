@@ -22,7 +22,7 @@ public class AuthController(AuthService authService) : Controller
 
         var result = await _authService.LoginAsync(request);
         if (result == null)
-            return Unauthorized(new ApiErrorResponse { Message = "Credenciais inválidas" });
+            return Unauthorized(new ApiErrorResponse { Message = "Usuário ou senha inválidos. Verifique suas credenciais e tente novamente." });
 
         return Ok(new ApiSuccessResponse<AuthResponseDto> { Data = result });
     }

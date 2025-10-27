@@ -1,10 +1,8 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+import { api } from './api';
 
 const authService = {
   login: async (email, password) => {
-    const response = await axios.post(`${API_URL}/auth/login`, {
+    const response = await api.post('/auth/login', {
       email,
       password
     });
@@ -12,27 +10,22 @@ const authService = {
   },
 
   register: async (userData) => {
-    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    const response = await api.post('/auth/register', userData);
     return response.data.data || response.data;
   },
 
   forgotPassword: async (email) => {
-    const response = await axios.post(`${API_URL}/auth/forgot-password`, {
+    const response = await api.post('/auth/forgot-password', {
       email
     });
     return response.data;
   },
 
   changePassword: async (currentPassword, newPassword, confirmPassword) => {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_URL}/auth/change-password`, {
+    const response = await api.post('/auth/change-password', {
       currentPassword,
       newPassword,
       confirmPassword
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
     });
     return response.data;
   }
