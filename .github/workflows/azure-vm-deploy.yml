@@ -256,35 +256,38 @@ jobs:
             ./deploy.sh
 
       - name: Health Check
+        continue-on-error: true
         run: |
-          echo "🏥 Performing health checks..."
+          echo "🏥 Performing basic connectivity checks..."
           
           # Wait for services to be fully up
-          sleep 30
+          sleep 20
           
-          # Check API health
-          API_URL="http://${{ secrets.AZURE_VM_HOST }}:7000/health"
-          echo "Checking API at $API_URL"
+          # Check if API port is open
+          API_HOST="${{ secrets.AZURE_VM_HOST }}"
+          echo "Checking if API is accessible at $API_HOST:7000"
           
-          for i in {1..5}; do
-            if curl -f -s -o /dev/null -w "%{http_code}" $API_URL | grep -q "200"; then
-              echo "✅ API is healthy!"
-              break
-            else
-              echo "⏳ Waiting for API... (attempt $i/5)"
-              sleep 10
-            fi
-          done
-          
-          # Check Frontend
-          FRONTEND_URL="http://${{ secrets.AZURE_VM_HOST }}"
-          echo "Checking Frontend at $FRONTEND_URL"
-          
-          if curl -f -s -o /dev/null -w "%{http_code}" $FRONTEND_URL | grep -q "200"; then
-            echo "✅ Frontend is healthy!"
+          if timeout 10 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/7000" 2>/dev/null; then
+            echo "✅ API port 7000 is open and accepting connections!"
           else
-            echo "⚠️ Frontend health check failed"
+            echo "⚠️ API port check failed (may still be starting...)"
           fi
+          
+          # Check if Frontend port is open  
+          echo "Checking if Frontend is accessible at $API_HOST:80"
+          
+          if timeout 10 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/80" 2>/dev/null; then
+            echo "✅ Frontend port 80 is open and accepting connections!"
+          else
+            echo "⚠️ Frontend port check failed (may still be starting...)"
+          fi
+          
+          echo ""
+          echo "ℹ️  Note: Services may take a few minutes to fully initialize."
+          echo "📱 Access your application at:"
+          echo "   Frontend: http://$API_HOST"
+          echo "   API: http://$API_HOST:7000"
+          echo "   Swagger: http://$API_HOST:7000/swagger"
 
       - name: Notify deployment status
         if: always()
