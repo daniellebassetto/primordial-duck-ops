@@ -1,0 +1,176 @@
+.app-header {
+  background:
+    linear-gradient(135deg,
+      rgba(74, 90, 58, 0.2) 0%,
+      rgba(0, 0, 0, 0.9) 50%,
+      rgba(212, 97, 10, 0.15) 100%),
+    linear-gradient(90deg,
+      var(--night-blue) 0%,
+      var(--olive-dark) 50%,
+      var(--night-blue) 100%);
+  border-bottom: 3px solid var(--tactical-orange);
+  padding: 1rem 0;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(212, 97, 10, 0.3);
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--tactical-orange) 20%,
+      var(--military-green) 50%,
+      var(--tactical-orange) 80%,
+      transparent);
+  box-shadow: 0 0 10px rgba(212, 97, 10, 0.5);
+}
+
+.header-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: linear-gradient(135deg, var(--tactical-orange), var(--camo-brown));
+  border: 2px solid var(--tactical-orange);
+  border-radius: 8px;
+  padding: 0.5rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px rgba(212, 97, 10, 0.5);
+}
+
+.mobile-menu-btn:hover {
+  background: linear-gradient(135deg, var(--military-green), var(--tactical-orange));
+  box-shadow: 0 0 15px rgba(212, 97, 10, 0.7);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.mobile-menu-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--tactical-orange);
+  margin: 0;
+  letter-spacing: 3px;
+  font-family: 'Courier New', monospace;
+  text-shadow:
+    0 0 10px rgba(212, 97, 10, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header-subtitle {
+  font-size: 0.8rem;
+  color: var(--sand-tan);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background:
+    linear-gradient(135deg,
+      rgba(74, 90, 58, 0.2) 0%,
+      rgba(0, 0, 0, 0.5) 100%);
+  border: 2px solid var(--steel-gray);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 10px rgba(74, 90, 58, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.user-info:hover {
+  border-color: var(--tactical-orange);
+  box-shadow:
+    inset 0 0 10px rgba(212, 97, 10, 0.2),
+    0 4px 12px rgba(212, 97, 10, 0.3);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--tactical-orange), var(--camo-brown));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 2px solid var(--steel-gray);
+  box-shadow: 0 0 10px rgba(212, 97, 10, 0.5);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: bold;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+}
+
+.user-role {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #a5d6a7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    display: none;
+    /* Esconde header em mobile - menu fica pela sidebar */
+  }
+}
+}

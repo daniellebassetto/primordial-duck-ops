@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: pdo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-primordial@duck2025}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-primordial_duck_operation}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pdo-network
+    # Otimizações para VM pequena
+    command: --default-authentication-plugin=mysql_native_password --max_connections=50 --innodb_buffer_pool_size=128M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-primordial@duck2025}"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+    restart: unless-stopped
+    # Limitar recursos para B1ms
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pdo-api
+    ports:
+      - "7000:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Database=${MYSQL_DATABASE:-primordial_duck_operation};User=root;Password=${MYSQL_ROOT_PASSWORD:-primordial@duck2025};
+    networks:
+      - pdo-network
+    restart: unless-stopped
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+        reservations:
+          memory: 512M
+
+  frontend:
+    build:
+      context: ./frontend/primordial-duck-frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:7000/api}
+        - VITE_EMAILJS_SERVICE_ID=${VITE_EMAILJS_SERVICE_ID}
+        - VITE_EMAILJS_TEMPLATE_ID=${VITE_EMAILJS_TEMPLATE_ID}
+        - VITE_EMAILJS_PUBLIC_KEY=${VITE_EMAILJS_PUBLIC_KEY}
+    container_name: pdo-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - pdo-network
+    restart: unless-stopped
+    # Limitar recursos
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+networks:
+  pdo-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

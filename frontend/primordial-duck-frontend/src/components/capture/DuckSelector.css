@@ -1,0 +1,367 @@
+.duck-selector {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+  border: 2px solid #8B4513;
+  border-radius: 12px;
+  padding: 20px;
+  color: #e0e0e0;
+}
+
+.duck-selector h3 {
+  margin: 0 0 20px 0;
+  text-align: center;
+  color: #CD853F;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Courier New', monospace;
+}
+
+.selected-display {
+  background: rgba(139, 69, 19, 0.05);
+  border: 2px dashed #8B4513;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selected-display:hover {
+  background: rgba(139, 69, 19, 0.1);
+  border-color: #CD853F;
+  box-shadow: 0 0 15px rgba(139, 69, 19, 0.2);
+}
+
+.selected-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.item-info h4 {
+  color: #CD853F;
+  margin: 0;
+  font-size: 1.2rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.item-info span {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+}
+
+.change-btn {
+  background: linear-gradient(135deg, #8B4513, #654321);
+  color: white;
+  border: 1px solid #8B4513;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.change-btn:hover {
+  background: linear-gradient(135deg, #A0522D, #8B4513);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4);
+  transform: translateY(-2px);
+}
+
+.select-placeholder {
+  color: #a0a0a0;
+  font-style: italic;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+.no-ducks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  background: rgba(139, 69, 19, 0.05);
+  border-radius: 8px;
+  border: 2px dashed #8B4513;
+}
+
+.no-ducks h4 {
+  margin: 15px 0 10px 0;
+  color: #CD853F;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.ducks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Estilo da scrollbar */
+.ducks-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ducks-grid::-webkit-scrollbar-track {
+  background: rgba(139, 69, 19, 0.2);
+  border-radius: 10px;
+}
+
+.ducks-grid::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.6);
+  border-radius: 10px;
+}
+
+.ducks-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(205, 133, 63, 0.8);
+}
+
+.duck-card {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+  border: 2px solid #8B4513;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.duck-card:hover {
+  transform: translateY(-3px);
+  border-color: #CD853F;
+  box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
+}
+
+.duck-card.selected {
+  border-color: #CD853F;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+  box-shadow: 0 0 20px rgba(139, 69, 19, 0.5);
+}
+
+.selected-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: linear-gradient(135deg, #8B4513, #654321);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: targetPulse 2s infinite;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.5);
+}
+
+.duck-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.duck-avatar {
+  font-size: 2.5rem;
+  animation: wiggle 3s ease-in-out infinite;
+}
+
+.duck-info {
+  flex: 1;
+}
+
+.duck-info h4 {
+  margin: 0 0 3px 0;
+  color: #e74c3c;
+  font-size: 1rem;
+}
+
+.species {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+.difficulty-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  min-width: 70px;
+}
+
+.difficulty-badge span {
+  font-size: 0.8rem;
+}
+
+.difficulty-badge small {
+  font-size: 0.65rem;
+  opacity: 0.9;
+}
+
+.duck-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.duck-status {
+  align-self: center;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  justify-content: center;
+}
+
+.status-icon {
+  font-size: 1.1rem;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 0 12px;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.spec-item span:first-child {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.spec-item span:last-child {
+  color: white;
+  font-weight: 500;
+}
+
+.heart-rate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #ff6b6b;
+  justify-content: center;
+}
+
+.duck-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  justify-content: center;
+}
+
+.super-powers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.powers-list {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.power-tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.power-tag.more {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+@keyframes targetPulse {
+
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes wiggle {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  10% {
+    transform: rotate(-2deg);
+  }
+
+  20% {
+    transform: rotate(2deg);
+  }
+
+  30% {
+    transform: rotate(-1deg);
+  }
+
+  40% {
+    transform: rotate(1deg);
+  }
+
+  50% {
+    transform: rotate(0deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .ducks-grid {
+    max-height: 400px;
+  }
+
+  .duck-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}

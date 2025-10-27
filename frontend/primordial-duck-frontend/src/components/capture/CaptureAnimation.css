@@ -1,0 +1,128 @@
+.capture-animation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.animation-container {
+  width: 400px;
+  height: 300px;
+  position: relative;
+}
+
+.phase {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.drone-anim, .duck-anim {
+  font-size: 3rem;
+  position: absolute;
+}
+
+.approaching .drone-anim {
+  left: 50px;
+  animation: droneApproach 1s ease-in-out;
+}
+
+.approaching .duck-anim {
+  right: 50px;
+}
+
+.capturing .drone-anim {
+  left: 150px;
+  animation: droneHover 0.5s ease-in-out infinite;
+}
+
+.capturing .duck-anim {
+  right: 150px;
+  animation: duckStruggle 0.3s ease-in-out infinite;
+}
+
+.capture-effect {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 3px solid #4ecdc4;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: captureRing 1s ease-in-out infinite;
+}
+
+.result-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: resultBounce 0.5s ease-out;
+}
+
+.result-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+
+.result.success .result-text {
+  color: #4CAF50;
+}
+
+.result.failure .result-text {
+  color: #f44336;
+}
+
+.text {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+@keyframes droneApproach {
+  from { left: 50px; }
+  to { left: 150px; }
+}
+
+@keyframes droneHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes duckStruggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+@keyframes captureRing {
+  0% { 
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes resultBounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}

@@ -1,0 +1,51 @@
+.simple-duck-selector {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+}
+
+.simple-duck-selector h3 {
+  margin: 0 0 15px 0;
+  color: #e74c3c;
+}
+
+.duck-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+}
+
+.duck-select option {
+  background: #2c3e50;
+  color: white;
+}
+
+.duck-details {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.duck-details h4 {
+  margin: 0 0 10px 0;
+  color: #e74c3c;
+}
+
+.duck-info p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.powers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  color: #f39c12;
+}

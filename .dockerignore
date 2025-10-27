@@ -1,0 +1,42 @@
+# Ignorar arquivos de desenvolvimento
+**/node_modules
+**/dist
+**/build
+**/.vscode
+**/.idea
+**/.vs
+
+# Ignorar arquivos de desenvolvimento do backend
+**/bin
+**/obj
+**/*.user
+**/*.suo
+
+# Ignorar migrations antigas (serão recriadas)
+**/Migrations
+
+# Ignorar arquivos de ambiente de desenvolvimento
+**/.env.development
+**/.env.local
+
+# Ignorar logs
+**/logs
+**/*.log
+
+# Ignorar arquivos do git
+**/.git
+**/.gitignore
+
+# Ignorar Docker
+**/.dockerignore
+**/docker-compose*.yml
+!docker-compose.yml
+
+# Ignorar testes
+**/coverage
+**/*.test.js
+**/*.spec.js
+
+# Ignorar documentação de desenvolvimento
+**/README.md
+!./README.md

@@ -1,0 +1,300 @@
+:root {
+  /* Paleta Militar Expandida */
+  --military-green: #4a5a3a;
+  --olive-dark: #3d4a2c;
+  --olive-light: #6b7c5c;
+  --tactical-orange: #d4610a;
+  --tactical-red: #8b3a3a;
+  --steel-gray: #4a5459;
+  --night-blue: #1a2332;
+  --sand-tan: #c7b299;
+  --camo-brown: #5a4a3a;
+  --neon-green: #44ff44;
+  --warning-yellow: #ffaa00;
+  --danger-red: #ff4444;
+  --info-cyan: #00d4ff;
+  --success-green: #27ae60;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: 'Courier New', 'Consolas', monospace;
+  background:
+    radial-gradient(circle at 25% 25%, rgba(74, 90, 58, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(90, 74, 58, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(26, 35, 50, 0.1) 0%, transparent 70%),
+    linear-gradient(135deg, #0d1b0d 0%, #1a2332 30%, #1a1a1a 50%, #0d1b0d 100%);
+  color: #e0e0e0;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    repeating-linear-gradient(45deg,
+      transparent,
+      transparent 2px,
+      rgba(74, 90, 58, 0.03) 2px,
+      rgba(74, 90, 58, 0.03) 4px),
+    repeating-linear-gradient(-45deg,
+      transparent,
+      transparent 3px,
+      rgba(212, 97, 10, 0.02) 3px,
+      rgba(212, 97, 10, 0.02) 6px);
+  z-index: -1;
+  animation: camoPattern 60s linear infinite;
+}
+
+@keyframes camoPattern {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  100% {
+    transform: translateX(20px) translateY(20px);
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 10px;
+  }
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--military-green), var(--olive-dark));
+  color: white;
+  border: 1px solid var(--olive-light);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 90, 58, 0.5);
+  background: linear-gradient(135deg, var(--olive-light), var(--military-green));
+  border-color: var(--tactical-orange);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--tactical-orange);
+  border: 2px solid var(--tactical-orange);
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 97, 10, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-secondary:hover::before {
+  left: 100%;
+}
+
+.btn-secondary:hover {
+  background: var(--tactical-orange);
+  color: white;
+  box-shadow: 0 0 15px rgba(212, 97, 10, 0.4);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #a5d6a7;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #4a5c3a;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(0, 0, 0, 0.9) 100%);
+  color: #e0e0e0;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+}
+
+.form-group select option {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.error {
+  color: #ff4444;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success {
+  color: #44ff44;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Error Message Component */
+.error-message {
+  background: #2d1b1b;
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  animation: slideIn 0.3s ease-out;
+}
+
+.error-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.error-icon {
+  font-size: 20px;
+}
+
+.error-title {
+  flex: 1;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.error-close:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.error-details {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 68, 68, 0.2);
+}
+
+.error-details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.error-details li {
+  padding: 4px 0;
+  color: #ffcccc;
+  font-size: 14px;
+}
+
+.error-details li:before {
+  content: "• ";
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

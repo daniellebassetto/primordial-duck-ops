@@ -1,0 +1,226 @@
+.capture-result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-video-container {
+  display: flex;
+  justify-content: center;
+  background: rgba(76, 175, 80, 0.05);
+  border: 2px solid #4a5c3a;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.result-video {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #4a5c3a;
+}
+
+.result-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+  text-align: center;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+.mission-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(0, 0, 0, 0.8) 100%);
+  border: 2px solid #4a5c3a;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(76, 175, 80, 0.1);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: #a5d6a7;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  color: #e0e0e0;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.stat-value.success {
+  color: #4CAF50;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.stat-value.escaped {
+  color: #CD853F;
+  text-shadow: 0 0 10px rgba(205, 133, 63, 0.5);
+}
+
+.stat-value.failed {
+  color: #f44336;
+  text-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+}
+
+.drone-impact-section {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
+  border: 2px solid #4a5c3a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.drone-impact-section h4 {
+  margin: 0 0 20px 0;
+  color: #4CAF50;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 1rem;
+  text-align: center;
+  border-bottom: 2px solid #4a5c3a;
+  padding-bottom: 10px;
+}
+
+.impact-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.impact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.impact-label {
+  color: #a5d6a7;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.impact-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.impact-bar {
+  flex: 1;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #4a5c3a;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.impact-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent);
+  border-radius: 12px 12px 0 0;
+}
+
+.impact-bar-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.impact-bar-fill.fuel {
+  background: linear-gradient(90deg, #CD853F, #8B4513);
+}
+
+.impact-bar-fill.battery {
+  background: linear-gradient(90deg, #4CAF50, #2E7D32);
+}
+
+.impact-bar-fill.integrity {
+  background: linear-gradient(90deg, #2196F3, #0D47A1);
+}
+
+.impact-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #e0e0e0;
+  white-space: nowrap;
+  min-width: 140px;
+  text-align: right;
+}
+
+.impact-reduction {
+  color: #f44336;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.drone-warning {
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(200, 0, 0, 0.1));
+  border: 2px solid #f44336;
+  border-radius: 8px;
+  color: #ff6b6b;
+  text-align: center;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: warningPulse 2s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.6);
+  }
+}
+
+@media (max-width: 768px) {
+  .impact-bar-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .impact-value {
+    text-align: left;
+    min-width: auto;
+  }
+}

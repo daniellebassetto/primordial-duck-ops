@@ -1,0 +1,78 @@
+.simple-strategy-generator {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+}
+
+.simple-strategy-generator h3 {
+  margin: 0 0 15px 0;
+  color: #f39c12;
+}
+
+.generate-btn, .new-strategy-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #f39c12, #e67e22);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.generate-btn:hover, .new-strategy-btn:hover {
+  transform: translateY(-2px);
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #f39c12;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.strategy-result {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.strategy-item {
+  margin-bottom: 15px;
+}
+
+.strategy-item strong {
+  display: block;
+  color: #f39c12;
+  margin-bottom: 5px;
+}
+
+.strategy-item p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.success-chance {
+  text-align: center;
+  padding: 10px;
+  background: rgba(243, 156, 18, 0.2);
+  border-radius: 6px;
+  margin-bottom: 15px;
+  color: #f39c12;
+}

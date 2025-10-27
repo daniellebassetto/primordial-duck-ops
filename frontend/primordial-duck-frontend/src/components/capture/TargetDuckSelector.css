@@ -1,0 +1,328 @@
+.target-duck-selector {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.no-target-ducks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.no-target-ducks h3 {
+  margin: 15px 0 10px 0;
+  color: #ff6b6b;
+}
+
+.selector-header {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.selector-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.selector-header p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.ducks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Estilo da scrollbar */
+.ducks-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ducks-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.ducks-grid::-webkit-scrollbar-thumb {
+  background: rgba(231, 76, 60, 0.5);
+  border-radius: 10px;
+}
+
+.ducks-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(231, 76, 60, 0.8);
+}
+
+.duck-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.duck-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+.duck-card.selected {
+  border-color: #e74c3c;
+  box-shadow: 0 0 30px rgba(231, 76, 60, 0.3);
+  background: rgba(231, 76, 60, 0.1);
+}
+
+.duck-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.duck-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  color: #e74c3c;
+}
+
+.species {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+.difficulty-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  min-width: 80px;
+}
+
+.difficulty-badge span {
+  font-size: 0.9rem;
+}
+
+.difficulty-badge small {
+  font-size: 0.7rem;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.duck-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.duck-avatar {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.duck-avatar.hover {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.status-icon {
+  font-size: 1.2rem;
+}
+
+.selection-crosshair {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #e74c3c;
+  border-radius: 50%;
+  padding: 8px;
+  color: white;
+  animation: targetPulse 2s infinite;
+}
+
+.duck-stats {
+  margin-bottom: 15px;
+}
+
+.stat-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}
+
+.stat-value {
+  color: white;
+  font-weight: 600;
+}
+
+.duck-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.duck-location small {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.super-powers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.super-powers>span {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.powers-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.power-tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.power-tag.more {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+.selected-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.selected-text {
+  background: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  animation: selectedTargetPulse 2s infinite;
+}
+
+@keyframes targetPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes selectedTargetPulse {
+
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .ducks-grid {
+    max-height: 400px;
+  }
+
+  .duck-card-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .difficulty-badge {
+    align-self: flex-start;
+  }
+
+  .stat-group {
+    grid-template-columns: 1fr;
+  }
+}
