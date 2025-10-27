@@ -26,7 +26,6 @@ A aplicação é implantada automaticamente em uma **VM Azure Linux Ubuntu 22.04
 1. **CI (Continuous Integration)**:
    - Build automático do backend (.NET 9)
    - Build automático do frontend (React + Vite)
-   - Testes unitários
    - Geração de imagens Docker
 
 2. **CD (Continuous Deployment)**:
@@ -66,10 +65,8 @@ Para informações técnicas aprofundadas sobre cada parte do projeto, consulte:
 - [🚀 Como Executar](#-como-executar-o-projeto)
 - [🚢 Deploy e CI/CD](#-deploy-e-cicd)
 - [📱 Navegação do Sistema](#-navegação-do-sistema)
-- [📡 Endpoints da API](#-endpoints-da-api)
 - [🎨 Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [🧪 Fluxo de Uso](#-fluxo-de-uso-do-sistema)
-- [🐛 Troubleshooting](#-troubleshooting)
 - [👥 Autor](#-autor)
 
 ---
@@ -108,7 +105,6 @@ PrimordialDuckOperation/
   - `AuthService` - Autenticação e gerenciamento de usuários
   - `CaptureAnalysisService` - Análise de viabilidade de captura (4 métricas)
   - `CaptureStrategyService` - Geração de estratégias e defesas
-  - `EmailService` - Integração com EmailJS
 - **DTOs**: Objetos de transferência de dados
 - **Commands/Queries**: Separação de operações de leitura e escrita
 - **Interfaces**: Contratos de serviços
@@ -163,11 +159,11 @@ src/
 ### 🗄️ Banco de Dados (MySQL 8.0)
 
 **Schema e Tabelas**:
-- `users` - Usuários do sistema
+- `usuarios` - Usuários do sistema
 - `drones` - Drones de identificação e combate
-- `super_powers` - Catálogo de super poderes
-- `primordial_ducks` - Registro de Patos Primordiais
-- `capture_operations` - Operações de captura
+- `super_poderes` - Catálogo de super poderes
+- `patos_primordiais` - Registro de Patos Primordiais
+- `operacoes_captura` - Operações de captura
 
 **Relacionamentos**:
 - `PrimordialDuck` → `Drone` (N:1)
@@ -413,8 +409,6 @@ docker run --name mysql-primordial -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE
 1. **🏠 Dashboard**
    - Estatísticas gerais do sistema
    - Resumo de patos catalogados
-   - Status de operações ativas
-   - Métricas de drones
 
 2. **🤖 Drones**
    - Listagem com filtros (tipo, fabricante, país)
@@ -445,10 +439,8 @@ docker run --name mysql-primordial -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE
    - Comparação entre espécimes
 
 6. **🚁 Operações de Captura**
-   - Listagem de missões
    - Iniciar nova operação
    - Seleção de drone e alvo
-   - Acompanhamento de status
    - Registro de resultados
    - Histórico completo
 
@@ -592,8 +584,6 @@ docker-compose down -v
 docker-compose up -d --build --force-recreate
 ```
 
-📖 **Documentação completa**: Veja [DEPLOY.md](./DEPLOY.md) para instruções detalhadas de deployment.
-
 ---
 
 ### 💻 **Opção 2: Desenvolvimento Local (Sem Docker)**
@@ -684,44 +674,6 @@ docker run -d \
 # 3. Execute backend e frontend localmente (veja Opção 2)
 ```
 
----
-
-## 📡 Endpoints da API
-
-### 🔐 Autenticação (`/api/auth`)
-- `POST /login` - Login de usuário
-- `POST /register` - Registro de novo usuário
-- `POST /forgot-password` - Solicitar redefinição de senha
-- `POST /change-password` - Alterar senha (autenticado)
-
-### 🚁 Drones (`/api/drones`)
-- `GET /` - Lista todos os drones (com filtros e paginação)
-- `POST /` - Cria um novo drone
-- `GET /{id}` - Busca drone por ID
-- `PUT /{id}` - Atualiza drone
-- `DELETE /{id}` - Remove drone
-
-### ⚡ Super Poderes (`/api/superpowers`)
-- `GET /` - Lista todos os super poderes
-- `POST /` - Cria um novo super poder
-- `GET /{id}` - Busca super poder por ID
-- `PUT /{id}` - Atualiza super poder
-- `DELETE /{id}` - Remove super poder
-
-### 🦆 Patos Primordiais (`/api/primordialducks`)
-- `GET /` - Lista todos os patos (com filtros e paginação)
-- `POST /` - Registra um novo pato
-- `GET /{id}` - Busca pato por ID
-- `PUT /{id}` - Atualiza pato
-- `DELETE /{id}` - Remove pato
-
-### 🎯 Operações de Captura (`/api/captureoperations`)
-- `GET /` - Lista todas as operações
-- `POST /` - Cria nova operação
-- `GET /{id}` - Busca operação por ID
-- `PUT /{id}` - Atualiza operação
-- `DELETE /{id}` - Remove operação
-
 ## 🎨 Tecnologias Utilizadas
 
 ### Backend
@@ -754,7 +706,7 @@ docker run -d \
 
 ---
 
-## � Deploy e CI/CD
+## Deploy e CI/CD
 
 ### **Infraestrutura de Produção**
 
@@ -875,7 +827,7 @@ docker-compose up -d --force-recreate
 
 ---
 
-## �📊 Portas e Serviços
+## 📊 Portas e Serviços
 
 ### **Produção (Azure VM)**
 | Serviço  | Porta | URL                                              |
@@ -943,7 +895,7 @@ docker-compose up -d --force-recreate
   - Estratégia de ataque baseada nas características
   - Sistema de defesas aleatórias
   - Percentual de sucesso estimado
-- Inicie a operação
+- Inicie a operação por missão autoguiada ou mini jogos
 - Acompanhe status e resultados
 
 ### **5. Gestão de Conta**
@@ -981,110 +933,6 @@ docker-compose up -d --force-recreate
 
 ---
 
-## 🔧 Configurações Avançadas
-
-### **Customizar Algoritmo de Análise**
-
-Edite: `backend/PrimordialDuckOperation.Application/Services/CaptureAnalysisService.cs`
-
-```csharp
-// Ajustar pesos das métricas
-private const decimal DISTANCE_WEIGHT = 0.3m;
-private const decimal SIZE_WEIGHT = 0.2m;
-// ... outros pesos
-```
-
-### **Adicionar Novas Estratégias de Captura**
-
-1. Adicione enum: `backend/PrimordialDuckOperation.Domain/Enums/CaptureStrategyEnum.cs`
-2. Implemente lógica: `backend/PrimordialDuckOperation.Application/Services/CaptureStrategyService.cs`
-
-### **Personalizar Tema do Frontend**
-
-Edite variáveis CSS em: `frontend/primordial-duck-frontend/src/index.css`
-
-```css
-:root {
-  --primary-color: #2563eb;
-  --secondary-color: #7c3aed;
-  /* ... outras variáveis */
-}
-```
-
----
-
-## 📈 Funcionalidades Futuras (Roadmap)
-
-- [ ] Dashboard com gráficos e estatísticas avançadas
-- [ ] Sistema de notificações em tempo real
-- [ ] Exportação de relatórios (PDF/Excel)
-- [ ] Mapa interativo com localização dos patos
-- [ ] Timeline de operações de captura
-- [ ] Sistema de permissões por role
-- [ ] Versionamento de API (v2)
-- [ ] Testes unitários e de integração completos
-- [ ] CI/CD com GitHub Actions
-- [ ] Monitoramento e logs centralizados
-
----
-
-## 🐛 Troubleshooting
-
-### **Erro: Conexão com banco de dados falhou**
-```bash
-# Verifique se MySQL está rodando
-docker ps
-
-# Reinicie o container do MySQL
-docker-compose restart primordial-mysql
-
-# Verifique logs
-docker logs primordial-mysql
-```
-
-### **Erro: Frontend não consegue conectar à API**
-```bash
-# Verifique variável de ambiente
-# arquivo: frontend/primordial-duck-frontend/.env.local
-VITE_API_URL=http://localhost:7000/api
-
-# Verifique CORS no backend
-# arquivo: backend/PrimordialDuckOperation.Api/Program.cs
-```
-
-### **Erro: Migration pendente**
-```bash
-cd backend
-dotnet ef database update --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
-```
-
-### **Erro: Porta já em uso**
-```bash
-# Parar todos os containers
-docker-compose down
-
-# Verificar processos usando a porta
-# Windows PowerShell:
-netstat -ano | findstr :7000
-
-# Linux/Mac:
-lsof -i :7000
-```
-
----
-
-## 👥 Contribuindo
-
-Este é um projeto de desafio, mas melhorias são bem-vindas:
-
-1. Fork o repositório
-2. Crie uma branch (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
-
----
-
 ## 👨‍💻 Autor
 
 **Danielle Bassetto**
@@ -1104,12 +952,7 @@ Todos os direitos reservados © 2025 Danielle Bassetto
 
 ## 🙏 Agradecimentos
 
-- **DSIN** - Pela oportunidade e pelo desafio incrível
-- **Microsoft Azure** - Pela infraestrutura em nuvem confiável
-- **GitHub** - Pelo versionamento e CI/CD via GitHub Actions
-- **Comunidade .NET** - Pela excelente documentação e suporte
-- **Comunidade React** - Pelas ferramentas modernas e ecossistema vibrante
-- **Docker Community** - Pela containerização que simplifica o deploy
+Agradeço a Dsin pela oportunidade de estar pariticpando mais um ano consecutivo. Esse é meu último ano de participação, vou sentir falta haha!
 
 ---
 
