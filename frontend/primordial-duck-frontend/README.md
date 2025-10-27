@@ -6,7 +6,13 @@ Interface web moderna construída com **React 19** e **Vite 7** para gerenciamen
 
 ## Acesso à Aplicação
 
-- **Interface Web (Produção)**: http://172.172.122.181:8080/
+### **Ambiente de Produção**
+- **Interface Web**: http://172.172.122.181/
+
+### **Ambiente Local**
+- **Desenvolvimento (Vite)**: http://localhost:3000
+- **Docker (desenvolvimento)**: http://localhost:3000
+- **Preview Build**: http://localhost:4173
 
 ---
 
@@ -273,13 +279,14 @@ Acesse diretamente a interface web:
 
 ```bash
 # Na raiz do projeto
-docker-compose up -d primordial-frontend
+docker-compose up -d frontend
 
 # Verificar logs
-docker logs -f primordial-frontend
-
-# Frontend estará em: http://localhost:8080
+docker logs -f pdo-frontend
 ```
+
+**Frontend estará em**: http://localhost:3000
+
 
 ### **Opção 3: Desenvolvimento Local**
 
@@ -327,13 +334,23 @@ yarn preview
 
 ---
 
+## 🚀 Como Executar
 
-# 4. Execute em modo desenvolvimento
+### **Modo Desenvolvimento**
+
+```bash
+# 1. Instale as dependências
+npm install
+# ou
+yarn install
+
+# 2. Execute em modo desenvolvimento
 npm run dev
 # ou
 yarn dev
+```
 
-## Frontend estará disponível em: http://localhost:3000
+**Frontend estará disponível em**: http://localhost:3000
 
 ---
 
