@@ -4,11 +4,25 @@ Interface web moderna construída com **React 19** e **Vite 7** para gerenciamen
 
 ---
 
-## 🏗️ Arquitetura do Frontend
+## � Acesso à Aplicação
+
+- **Interface Web (Produção)**: http://172.172.122.181:8080/
+
+---
+
+## �🏗️ Arquitetura do Frontend
 
 ### **Component-Based Architecture**
 
-O projeto segue os princípios de arquitetura baseada em componentes com separação clara de responsabilidades:
+O projeto segue os princípios de arquitetura baseada em componentes com separação clara de responsabilidades e organização modular.
+
+**Princípios Aplicados**:
+- ✅ Componentização e Reutilização
+- ✅ Separação de Responsabilidades (SoC)
+- ✅ State Management com Context API
+- ✅ Service Layer para comunicação com API
+- ✅ Custom Hooks para lógica compartilhada
+- ✅ Atomic Design Pattern
 
 ```
 src/
@@ -248,42 +262,91 @@ emailjs.send(
 
 ---
 
-## 🚀 Como Executar
+## 🚀 Como Executar o Frontend
 
-### **Opção 1: Docker (Recomendado)**
+### **Opção 1: Acessar Aplicação em Produção**
+
+Acesse diretamente a interface web:
+- **URL**: http://172.172.122.181:8080/
+
+### **Opção 2: Docker**
 
 ```bash
 # Na raiz do projeto
-docker-compose up -d
+docker-compose up -d primordial-frontend
 
-# Frontend estará em: http://localhost:3000
+# Verificar logs
+docker logs -f primordial-frontend
+
+# Frontend estará em: http://localhost:8080
 ```
 
----
+### **Opção 3: Desenvolvimento Local**
 
-### **Opção 2: Desenvolvimento Local**
-
-#### **Pré-requisitos**:
-- Node.js 18+ ([Download](https://nodejs.org/))
+**Pré-requisitos**:
+- Node.js 18+ instalado
 - npm ou yarn
 
-#### **Passos**:
+**Passos**:
 
 ```bash
-# 1. Navegue até a pasta do frontend
+# 1. Navegar para a pasta do frontend
 cd frontend/primordial-duck-frontend
 
-# 2. Instale as dependências
+# 2. Instalar dependências
 npm install
 # ou
 yarn install
 
-# 3. Configure as variáveis de ambiente
-# Crie o arquivo .env.development na raiz do projeto frontend:
+# 3. Configurar variáveis de ambiente (opcional)
+# Criar arquivo .env.local na raiz:
+# VITE_API_URL=http://localhost:7000/api
 
-VITE_API_URL=http://localhost:7000/api
-VITE_EMAILJS_SERVICE_ID=seu_service_id
-VITE_EMAILJS_TEMPLATE_ID=seu_template_id
+# 4. Executar em modo desenvolvimento
+npm run dev
+# ou
+yarn dev
+
+# 5. Acessar aplicação
+# URL: http://localhost:5173
+```
+
+**Build para Produção**:
+
+```bash
+# Gerar build otimizado
+npm run build
+# ou
+yarn build
+
+# Visualizar build localmente
+npm run preview
+# ou
+yarn preview
+```
+
+---
+
+## 🔧 Scripts Disponíveis
+
+```bash
+# Desenvolvimento com hot-reload
+npm run dev
+
+# Build para produção
+npm run build
+
+# Preview do build de produção
+npm run preview
+
+# Lint do código
+npm run lint
+
+# Formatar código
+npm run format
+```
+
+---
 VITE_EMAILJS_PUBLIC_KEY=sua_public_key
 
 # 4. Execute em modo desenvolvimento
@@ -418,82 +481,247 @@ import styles from './DronesPage.css';
 ## 📊 Tecnologias e Bibliotecas
 
 ### **Core**
-- **React 19.1.1** - Biblioteca UI
-- **Vite 7.1.7** - Build tool e dev server
+- **React 19.1.1** - Biblioteca UI moderna com Hooks
+- **Vite 7.1.7** - Build tool ultra-rápido e dev server
 
 ### **Roteamento**
-- **React Router 7.9.4** - Roteamento SPA
+- **React Router 7.9.4** - Roteamento SPA com lazy loading
 
 ### **HTTP Client**
-- **Axios 1.7.9** - Requisições HTTP
+- **Axios 1.7.9** - Requisições HTTP com interceptors
 
 ### **Email**
-- **EmailJS 4.4.1** - Envio de emails
+- **EmailJS 4.4.1** - Envio de emails sem backend dedicado
 
 ### **Ícones**
-- **Lucide React 0.468.0** - Ícones modernos
+- **Lucide React 0.468.0** - Biblioteca de ícones SVG moderna
 
 ### **Estilização**
-- CSS puro (sem framework)
-- CSS Modules para escopo isolado
+- CSS puro com variáveis CSS
+- CSS Modules para escopo isolado de componentes
+- Design responsivo mobile-first
+
+---
+
+## 📁 Estrutura de Organização
+
+### **Por Funcionalidade**
+
+```
+src/
+├── components/           # Componentes reutilizáveis (atoms/molecules)
+│   ├── Layout.jsx       # Shell da aplicação
+│   ├── FilterPanel.jsx  # Sistema de filtros
+│   └── Pagination.jsx   # Paginação
+├── pages/               # Páginas completas (organisms/templates)
+│   ├── auth/           # Autenticação
+│   ├── drones/         # Gestão de drones
+│   ├── primordial-ducks/ # Gestão de patos
+│   ├── super-powers/   # Gestão de poderes
+│   ├── capture/        # Operações de captura
+│   └── dashboard/      # Dashboard principal
+├── contexts/            # Estado global (AuthContext)
+├── services/            # Camada de comunicação API
+│   ├── api.js          # Instância Axios configurada
+│   ├── auth.service.js # Endpoints de autenticação
+│   └── *.service.js    # Serviços especializados
+├── utils/               # Funções utilitárias
+├── assets/              # Imagens, fontes, etc
+├── App.jsx              # Configuração de rotas
+└── main.jsx            # Entry point da aplicação
+```
+
+### **Padrão de Nomenclatura**
+- **Componentes**: PascalCase (ex: `PrimordialDuckForm.jsx`)
+- **Services**: camelCase com sufixo (ex: `drone.service.js`)
+- **Páginas**: PascalCase com sufixo Page (ex: `DronesPage.jsx`)
+- **Contextos**: PascalCase com sufixo Context (ex: `AuthContext.jsx`)
 
 ---
 
 ## 🎯 Boas Práticas Implementadas
 
-- ✅ **Component-Based Architecture** - Componentes reutilizáveis
-- ✅ **Context API** - Gerenciamento de estado global
-- ✅ **Service Layer** - Separação de lógica de API
-- ✅ **Environment Variables** - Configuração externa
-- ✅ **Error Handling** - Tratamento robusto de erros
-- ✅ **Loading States** - Feedback visual de carregamento
-- ✅ **Form Validation** - Validação client-side
-- ✅ **Responsive Design** - Mobile-first approach
-- ✅ **Code Splitting** - Lazy loading de rotas (futuro)
-- ✅ **Security** - XSS protection, token em header
+### **Arquitetura**
+- ✅ **Component-Based Architecture** - Componentes reutilizáveis e isolados
+- ✅ **Context API** - Gerenciamento de estado global sem bibliotecas externas
+- ✅ **Service Layer** - Separação clara entre UI e lógica de API
+- ✅ **Custom Hooks** - Lógica compartilhada (useAuth)
+- ✅ **Atomic Design** - Organização de componentes por complexidade
+
+### **Código**
+- ✅ **Single Responsibility** - Um componente, uma responsabilidade
+- ✅ **DRY (Don't Repeat Yourself)** - Reutilização de código
+- ✅ **Composition over Inheritance** - Composição de componentes
+- ✅ **Props Validation** - Validação de propriedades (PropTypes)
+- ✅ **Error Boundaries** - Tratamento de erros em componentes
+
+### **Performance**
+- ✅ **Code Splitting** - Carregamento sob demanda de rotas
+- ✅ **Lazy Loading** - Componentes carregados quando necessários
+- ✅ **Memoization** - useMemo e useCallback quando apropriado
+- ✅ **Debounce** - Em buscas e filtros
+
+### **UX/UI**
+- ✅ **Loading States** - Feedback visual durante requisições
+- ✅ **Error Handling** - Mensagens de erro amigáveis
+- ✅ **Form Validation** - Validação client-side antes de enviar
+- ✅ **Responsive Design** - Adaptação para todos os tamanhos de tela
+- ✅ **Accessibility** - Semantic HTML e ARIA labels
 
 ---
 
 ## 🔐 Segurança
 
-### **Proteção XSS**
-- React escapa automaticamente strings
-- Evita `dangerouslySetInnerHTML`
+### **Proteção XSS (Cross-Site Scripting)**
+- React escapa automaticamente strings renderizadas
+- Evita uso de `dangerouslySetInnerHTML`
+- Sanitização de inputs do usuário
 
-### **Token JWT**
-- Armazenado no localStorage (alternativa: httpOnly cookies)
-- Enviado apenas via header Authorization
-- Não exposto em URLs
+### **Autenticação JWT**
+- Token armazenado no localStorage
+- Enviado exclusivamente via header `Authorization: Bearer {token}`
+- Nunca exposto em URLs ou query parameters
+- Logout limpa tokens do storage
 
-### **CORS**
-- Backend configurado para aceitar origem do frontend
+### **CORS (Cross-Origin Resource Sharing)**
+- Backend configurado para aceitar apenas origens confiáveis
+- Requisições incluem credenciais quando necessário
+
+### **Validação de Dados**
+- Validação client-side em formulários
+- Re-validação server-side na API
+- Prevenção de SQL Injection (handled by backend ORM)
 
 ---
 
 ## 📱 Responsividade
 
-- **Mobile First**: Design pensado primeiro para mobile
-- **Breakpoints**:
-  - Mobile: < 768px
-  - Tablet: 768px - 1024px
-  - Desktop: > 1024px
-- **Menu adaptativo**: Hamburguer em mobile, sidebar em desktop
+### **Mobile First Approach**
+- Design pensado primeiro para dispositivos móveis
+- Progressive enhancement para telas maiores
+
+### **Breakpoints**
+```css
+/* Mobile (padrão) */
+@media (max-width: 767px) { ... }
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) { ... }
+
+/* Desktop */
+@media (min-width: 1024px) { ... }
+
+/* Large Desktop */
+@media (min-width: 1440px) { ... }
+```
+
+### **Componentes Adaptativos**
+- **Menu**: Hamburguer em mobile, sidebar fixa em desktop
+- **Tabelas**: Scroll horizontal em mobile, visualização completa em desktop
+- **Formulários**: Uma coluna em mobile, múltiplas colunas em desktop
+- **Modais**: Fullscreen em mobile, centralizado em desktop
 
 ---
 
-## 🚀 Deploy
+## 🚀 Deploy e Produção
 
-### **Nginx (Produção)**
-- Arquivo `nginx.conf` incluído
-- Suporte a SPA (fallback para index.html)
-- Compressão gzip habilitada
-- Cache de assets estáticos
+### **Build de Produção**
+
+```bash
+# Gerar build otimizado
+npm run build
+
+# Resultado em: dist/
+# - HTML minificado
+# - CSS extraído e minificado
+# - JS bundled e minificado
+# - Assets otimizados
+# - Source maps (opcional)
+```
+
+### **Nginx (Servidor Web)**
+
+Arquivo `nginx.conf` incluído no projeto:
+
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+    
+    root /usr/share/nginx/html;
+    index index.html;
+    
+    # SPA: redirecionar todas rotas para index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # Cache de assets estáticos
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    # Compressão gzip
+    gzip on;
+    gzip_types text/css application/javascript;
+}
+```
+
+### **Docker**
+
+```dockerfile
+# Multi-stage build
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
 
 ### **Variáveis de Ambiente**
-- Build args no Dockerfile
-- `.env.production` para produção
+
+**Desenvolvimento** (`.env.local`):
+```env
+VITE_API_URL=http://localhost:7000/api
+```
+
+**Produção** (`.env.production`):
+```env
+VITE_API_URL=http://172.172.122.181:7000/api
+```
 
 ---
+
+## 🧪 Testes (Futuro)
+
+### **Planejado**
+- ✅ **Jest** - Framework de testes
+- ✅ **React Testing Library** - Testes de componentes
+- ✅ **Vitest** - Testes unitários com Vite
+- ✅ **Cypress** - Testes E2E
+
+---
+
+## 📚 Referências e Recursos
+
+- [React Documentation](https://react.dev/)
+- [Vite Guide](https://vitejs.dev/guide/)
+- [React Router](https://reactrouter.com/)
+- [Axios Documentation](https://axios-http.com/)
+- [MDN Web Docs - CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [Lucide Icons](https://lucide.dev/)
+
+---
+
+**Desenvolvido para o Dsin Coder Challenge 2025** 🦆
 
 ## 📚 Estrutura de Rotas
 

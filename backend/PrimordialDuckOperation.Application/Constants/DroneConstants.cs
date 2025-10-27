@@ -4,7 +4,7 @@ public static class DroneConstants
 {
     public static class ErrorMessages
     {
-        public const string CannotDeleteDroneWithDucks = "Não é possível excluir este drone pois existem Patos Primordiais associados a ele.";
+        public const string CannotDeleteDroneWithDucks = "NÃ£o Ã© possÃ­vel excluir este drone pois existem Patos Primordiais associados a ele.";
     }
 
     public static class SortFields

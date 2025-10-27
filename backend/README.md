@@ -4,11 +4,26 @@ API RESTful construída com **.NET 9** e **Clean Architecture/DDD** para gerenci
 
 ---
 
-## 🏗️ Arquitetura do Backend
+## � Acesso à API
+
+- **Swagger (Produção)**: http://172.172.122.181:7000/swagger/index.html
+- **Endpoint Base**: http://172.172.122.181:7000/api
+
+---
+
+## �🏗️ Arquitetura do Backend
 
 ### **Clean Architecture / Domain-Driven Design (DDD)**
 
-O projeto segue os princípios de Clean Architecture com separação clara de responsabilidades em camadas:
+O projeto segue os princípios de Clean Architecture com separação clara de responsabilidades em camadas, garantindo manutenibilidade, testabilidade e baixo acoplamento.
+
+**Princípios Aplicados**:
+- ✅ Separação de Responsabilidades (SoC)
+- ✅ Inversão de Dependência (DIP)
+- ✅ Repository Pattern
+- ✅ CQRS (Command Query Responsibility Segregation)
+- ✅ Value Objects para conceitos de domínio
+- ✅ Domain Services para lógica complexa
 
 ```
 backend/
@@ -332,6 +347,50 @@ dotnet ef database update \
   --startup-project PrimordialDuckOperation.Api
 
 # 6. Execute a API
+---
+
+## 🚀 Como Executar o Backend
+
+### **Opção 1: Acessar API em Produção**
+
+Acesse diretamente a documentação Swagger:
+- **Swagger UI**: http://172.172.122.181:7000/swagger/index.html
+
+### **Opção 2: Docker**
+
+```bash
+# Na raiz do projeto
+docker-compose up -d primordial-backend primordial-mysql
+
+# Verificar logs
+docker logs -f primordial-backend
+
+# API disponível em http://localhost:7000
+```
+
+### **Opção 3: Desenvolvimento Local**
+
+**Pré-requisitos**:
+- .NET 9 SDK instalado
+- MySQL 8.0 rodando localmente ou via Docker
+
+**Passos**:
+
+```bash
+# 1. Navegar para a pasta backend
+cd backend
+
+# 2. Restaurar dependências
+dotnet restore
+
+# 3. Configurar connection string
+# Editar: PrimordialDuckOperation.Api/appsettings.Development.json
+# "DefaultConnection": "Server=localhost;Port=3306;Database=primordial_duck_db;User=root;Password=sua_senha;"
+
+# 4. Aplicar migrations ao banco
+dotnet ef database update --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
+
+# 5. Executar a aplicação
 dotnet run --project PrimordialDuckOperation.Api
 
 # Ou para watch mode (recarga automática):
@@ -342,6 +401,45 @@ dotnet watch run --project PrimordialDuckOperation.Api
 - HTTP: `http://localhost:7000`
 - HTTPS: `https://localhost:7001`
 - Swagger: `http://localhost:7000/swagger`
+
+---
+
+## 🔧 Comandos Úteis
+
+### **Entity Framework Core**
+
+```bash
+# Criar nova migration
+dotnet ef migrations add NomeDaMigration --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
+
+# Aplicar migrations
+dotnet ef database update --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
+
+# Reverter última migration
+dotnet ef migrations remove --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
+
+# Gerar script SQL
+dotnet ef migrations script --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
+```
+
+### **Build e Testes**
+
+```bash
+# Build da solution
+dotnet build
+
+# Limpar builds anteriores
+dotnet clean
+
+# Executar testes
+dotnet test
+
+# Executar com cobertura
+dotnet test /p:CollectCoverage=true
+
+# Publicar para produção
+dotnet publish -c Release -o ./publish
+```
 
 ---
 

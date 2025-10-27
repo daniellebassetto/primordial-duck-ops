@@ -131,10 +131,8 @@ const PrimordialDuckForm = ({ mode = 'create' }) => {
   }, [formData.hibernationStatus]);
 
   useEffect(() => {
-    // Apenas no modo de visualização não deve mudar as unidades
     if (isView) return;
 
-    // Se estiver editando, só muda as unidades se o usuário mudar o drone
     if (isEdit && initialDroneId && formData.droneId === initialDroneId) return;
 
     const selectedDrone = drones.find(d => d.id == formData.droneId);
