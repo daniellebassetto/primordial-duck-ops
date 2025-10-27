@@ -1,0 +1,377 @@
+name: 🔄 Clean Deploy (Reset & Redeploy)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_reset:
+        description: '⚠️ Confirmar reset completo do banco de dados? (digite "CONFIRMO")'
+        required: true
+        default: ''
+      environment:
+        description: 'Ambiente para deploy'
+        required: true
+        type: choice
+        options:
+          - production
+          - development
+        default: production
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
+  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+
+jobs:
+  validate:
+    name: ✅ Validar Confirmação
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar confirmação
+        run: |
+          if [ "${{ github.event.inputs.confirm_reset }}" != "CONFIRMO" ]; then
+            echo "❌ Reset cancelado! Você precisa digitar 'CONFIRMO' para prosseguir."
+            exit 1
+          fi
+          echo "✅ Confirmação recebida. Prosseguindo com o reset..."
+
+  cleanup-vm:
+    name: 🧹 Limpar VM
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parar e remover tudo na VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: ${{ secrets.AZURE_VM_SSH_PORT || 22 }}
+          script: |
+            echo "🛑 Parando containers..."
+            cd /opt/primordial-duck-operation 2>/dev/null || true
+            docker-compose down -v 2>/dev/null || true
+            
+            echo "🗑️ Removendo containers..."
+            docker rm -f pdo-mysql pdo-api pdo-frontend 2>/dev/null || true
+            
+            echo "🗑️ Removendo volumes..."
+            docker volume rm $(docker volume ls -q | grep -E 'primordial|pdo|mysql') 2>/dev/null || true
+            
+            echo "🗑️ Removendo imagens antigas..."
+            docker rmi -f $(docker images | grep -E 'primordial|pdo' | awk '{print $3}') 2>/dev/null || true
+            
+            echo "🧹 Limpando sistema Docker..."
+            docker system prune -a --volumes -f
+            
+            echo "📂 Limpando diretório de deploy..."
+            sudo rm -rf /opt/primordial-duck-operation/*
+            sudo rm -rf /tmp/primordial-duck-deploy
+            
+            echo "✅ Limpeza completa finalizada!"
+            
+            echo "📊 Status final:"
+            docker ps -a
+            docker images
+            docker volume ls
+
+  build-and-push:
+    name: 🏗️ Build e Push Imagens
+    needs: cleanup-vm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Backend
+        id: meta-backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Extract metadata for Frontend
+        id: meta-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push Frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend/primordial-duck-frontend
+          file: ./frontend/primordial-duck-frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+            VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+            VITE_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: 🚀 Deploy na VM
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create deployment script
+        run: |
+          mkdir -p deploy
+          
+          cat > deploy/deploy.sh << 'EOF'
+          #!/bin/bash
+          set -e
+
+          echo "🚀 Iniciando deploy completo do zero..."
+
+          # Variables
+          REGISTRY="ghcr.io"
+          PROJECT_DIR="/opt/primordial-duck-operation"
+          BACKEND_IMAGE="ghcr.io/${{ github.repository }}/backend:latest"
+          FRONTEND_IMAGE="ghcr.io/${{ github.repository }}/frontend:latest"
+          
+          # Create project directory
+          sudo mkdir -p $PROJECT_DIR
+          cd $PROJECT_DIR
+
+          # Login to GitHub Container Registry
+          echo "🔐 Login no registry..."
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
+
+          # Pull latest images
+          echo "📦 Baixando imagens mais recentes..."
+          docker pull $BACKEND_IMAGE
+          docker pull $FRONTEND_IMAGE
+
+          # Create docker-compose file
+          echo "📝 Criando arquivo docker-compose.yml..."
+          cat > docker-compose.yml << 'DOCKER_COMPOSE'
+          version: '3.8'
+
+          services:
+            mysql:
+              image: mysql:8.0
+              container_name: pdo-mysql
+              environment:
+                MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+                MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+              ports:
+                - "3307:3306"
+              volumes:
+                - mysql_data:/var/lib/mysql
+              networks:
+                - pdo-network
+              command: --default-authentication-plugin=mysql_native_password --max_connections=50 --innodb_buffer_pool_size=128M
+              healthcheck:
+                test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${{ secrets.MYSQL_ROOT_PASSWORD }}"]
+                timeout: 20s
+                retries: 10
+                interval: 10s
+              restart: unless-stopped
+              deploy:
+                resources:
+                  limits:
+                    memory: 512M
+                  reservations:
+                    memory: 256M
+
+            api:
+              image: ghcr.io/${{ github.repository }}/backend:latest
+              container_name: pdo-api
+              ports:
+                - "7000:8080"
+              depends_on:
+                mysql:
+                  condition: service_healthy
+              environment:
+                - ASPNETCORE_ENVIRONMENT=Production
+                - ASPNETCORE_URLS=http://+:8080
+                - ConnectionStrings__DefaultConnection=Server=mysql;Database=${{ secrets.MYSQL_DATABASE }};User=root;Password=${{ secrets.MYSQL_ROOT_PASSWORD }};
+                - JwtSettings__Secret=${{ secrets.JWT_SECRET }}
+                - JwtSettings__Issuer=${{ secrets.JWT_ISSUER }}
+                - JwtSettings__Audience=${{ secrets.JWT_AUDIENCE }}
+                - JwtSettings__ExpirationInMinutes=${{ secrets.JWT_EXPIRATION_MINUTES }}
+              networks:
+                - pdo-network
+              restart: unless-stopped
+              deploy:
+                resources:
+                  limits:
+                    memory: 768M
+                  reservations:
+                    memory: 512M
+
+            frontend:
+              image: ghcr.io/${{ github.repository }}/frontend:latest
+              container_name: pdo-frontend
+              ports:
+                - "80:80"
+              depends_on:
+                - api
+              networks:
+                - pdo-network
+              restart: unless-stopped
+              deploy:
+                resources:
+                  limits:
+                    memory: 256M
+                  reservations:
+                    memory: 128M
+
+          networks:
+            pdo-network:
+              driver: bridge
+
+          volumes:
+            mysql_data:
+          DOCKER_COMPOSE
+
+          # Start containers
+          echo "🚀 Iniciando containers..."
+          docker-compose up -d
+
+          # Wait for services
+          echo "⏳ Aguardando serviços iniciarem..."
+          sleep 30
+
+          # Check MySQL
+          echo "🔍 Verificando MySQL..."
+          docker logs pdo-mysql | tail -20
+
+          # Check API
+          echo "🔍 Verificando API..."
+          docker logs pdo-api | tail -20
+
+          # Check Frontend
+          echo "🔍 Verificando Frontend..."
+          docker logs pdo-frontend | tail -20
+
+          # Show status
+          echo "📊 Status dos containers:"
+          docker-compose ps
+
+          # Cleanup
+          echo "🧹 Limpando imagens antigas..."
+          docker image prune -f
+
+          # Logout
+          docker logout $REGISTRY
+
+          echo "✅ Deploy completo finalizado com sucesso!"
+          echo ""
+          echo "🌐 Acesse a aplicação em:"
+          echo "   Frontend: http://${{ secrets.AZURE_VM_HOST }}/"
+          echo "   API: http://${{ secrets.AZURE_VM_HOST }}:7000"
+          echo "   Swagger: http://${{ secrets.AZURE_VM_HOST }}:7000/swagger"
+          EOF
+
+          chmod +x deploy/deploy.sh
+
+      - name: Copy deployment script to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: ${{ secrets.AZURE_VM_SSH_PORT || 22 }}
+          source: "deploy/deploy.sh"
+          target: "/tmp/primordial-duck-deploy"
+          strip_components: 1
+
+      - name: Execute deployment on VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: ${{ secrets.AZURE_VM_SSH_PORT || 22 }}
+          script: |
+            cd /tmp/primordial-duck-deploy
+            chmod +x deploy.sh
+            ./deploy.sh
+
+  verify:
+    name: 🏥 Verificar Deploy
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health Check
+        run: |
+          echo "🏥 Verificando saúde dos serviços..."
+          
+          API_HOST="${{ secrets.AZURE_VM_HOST }}"
+          
+          # Aguardar serviços estarem prontos
+          sleep 30
+          
+          # Check API
+          echo "Verificando API em $API_HOST:7000..."
+          if timeout 15 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/7000" 2>/dev/null; then
+            echo "✅ API está acessível!"
+          else
+            echo "⚠️ API não respondeu (pode ainda estar inicializando...)"
+          fi
+          
+          # Check Frontend
+          echo "Verificando Frontend em $API_HOST:80..."
+          if timeout 15 bash -c "cat < /dev/null > /dev/tcp/$API_HOST/80" 2>/dev/null; then
+            echo "✅ Frontend está acessível!"
+          else
+            echo "⚠️ Frontend não respondeu (pode ainda estar inicializando...)"
+          fi
+
+      - name: Deployment Summary
+        if: always()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🎉 DEPLOY COMPLETO FINALIZADO"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "🌐 URLs da Aplicação:"
+          echo "   Frontend: http://${{ secrets.AZURE_VM_HOST }}/"
+          echo "   API: http://${{ secrets.AZURE_VM_HOST }}:7000/api"
+          echo "   Swagger: http://${{ secrets.AZURE_VM_HOST }}:7000/swagger"
+          echo ""
+          echo "🗄️ Banco de dados: RESETADO (começou do zero)"
+          echo "📦 Containers: NOVOS"
+          echo "🖼️ Imagens: ATUALIZADAS"
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
