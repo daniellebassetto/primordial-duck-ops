@@ -20,10 +20,11 @@ const ForgotPasswordPage = () => {
 
         try {
             const response = await authService.forgotPassword(email);
+            const passwordData = response.data || response;
 
-            if (response.data && response.data.temporaryPassword) {
+            if (passwordData && passwordData.temporaryPassword) {
                 try {
-                    await emailService.sendPasswordResetEmail(email, response.data.temporaryPassword);
+                    await emailService.sendPasswordResetEmail(email, passwordData.temporaryPassword);
                     setSuccess(true);
                 } catch (emailError) {
                     console.error('Erro ao enviar e-mail:', emailError);
