@@ -74,6 +74,12 @@ public class SuperPowerService(ISuperPowerRepository repository) : BaseService<I
     protected override SuperPower MapToEntity(CreateSuperPowerRequestDto dto) =>
         new(dto.Name, dto.Description, (SuperPowerClassificationEnum)dto.Classification);
 
-    protected override SuperPower MapToEntityForUpdate(UpdateSuperPowerRequestDto dto, SuperPower existing) =>
-        new(dto.Name, dto.Description, dto.Classification);
+    protected override SuperPower MapToEntityForUpdate(UpdateSuperPowerRequestDto dto, SuperPower existing)
+    {
+        existing.SetProperty(nameof(SuperPower.Name), dto.Name)
+               .SetProperty(nameof(SuperPower.Description), dto.Description)
+               .SetProperty(nameof(SuperPower.Classification), dto.Classification);
+
+        return existing;
+    }
 }
