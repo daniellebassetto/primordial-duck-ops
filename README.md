@@ -952,7 +952,6 @@ docker-compose up -d --force-recreate
 **Danielle Bassetto**
 - GitHub: [@daniellebassetto](https://github.com/daniellebassetto)
 - LinkedIn: [daniellebassetto](https://linkedin.com/in/daniellebassetto)
-- Email: contato@daniellebassetto.com.br
 
 ---
 
