@@ -7,8 +7,7 @@ Interface web moderna construída com **React 19** e **Vite 7** para gerenciamen
 ### **Ambiente Local**
 - **Desenvolvimento (Vite)**: http://localhost:3000
 - **Docker (desenvolvimento)**: http://localhost:3000
-- **Preview Build**: http://localhost:4173
-
+  
 ---
 
 ## 🏗️ Arquitetura do Frontend
