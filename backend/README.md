@@ -4,12 +4,6 @@ API REST construída com **.NET 9** e **Clean Architecture/DDD** para gerenciame
 
 ---
 
-## Acesso à API
-
-- **Swagger (Produção)**: http://172.172.122.181:7000/swagger/index.html
-
----
-
 ## 🏗️ Arquitetura do Backend
 
 ### **Clean Architecture / Domain-Driven Design (DDD)**
