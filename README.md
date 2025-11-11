@@ -4,52 +4,6 @@ Sistema completo para catalogação, análise e operações de captura de Patos 
 
 > **Repositório Full-Stack**: Backend (.NET 9) + Frontend (React) + Docker em um único repositório Git.
 
-## 🌐 Aplicação em Produção
-
-A aplicação está disponível nos seguintes endereços:
-
-- **Frontend (Interface Web)**: http://172.172.122.181:8080/
-- **Backend (API Swagger)**: http://172.172.122.181:7000/swagger/index.html
-
-### ⚠️ Não consegue acessar a aplicação em produção?
-
-**Problema**: Network error ou timeout ao acessar http://172.172.122.181:8080 ou http://172.172.122.181:7000
-
-**Causa comum**: Firewall ou configuração de rede bloqueando o acesso.
-
-**Soluções**:
-
-**Verificar sua rede local**:
-   - ✅ Redes corporativas/públicas podem bloquear portas customizadas (7000, 8080)
-   - ✅ Tente acessar de outra rede (dados móveis 4G/5G, rede doméstica)
-   - ✅ Desative VPN temporariamente para testar
-   - ✅ Verifique firewall do Windows/antivírus
-
-### 🚀 Deploy Automatizado
-
-A aplicação é implantada automaticamente em uma **VM Azure Linux Ubuntu 22.04 B1ms** através de pipeline CI/CD.
-
-**Infraestrutura**:
-- **Servidor**: Azure Virtual Machine
-- **SO**: Ubuntu 22.04 LTS
-- **Tamanho**: B1ms (1 vCPU, 2 GB RAM)
-- **Container Runtime**: Docker + Docker Compose
-- **CI/CD**: GitHub Actions (Continuous Integration & Continuous Deployment)
-
-**Pipeline de Deploy**:
-1. **CI (Continuous Integration)**:
-   - Build automático do backend (.NET 9)
-   - Build automático do frontend (React + Vite)
-   - Geração de imagens Docker
-
-2. **CD (Continuous Deployment)**:
-   - Push das imagens para container registry
-   - Deploy automático na VM Azure
-   - Restart dos containers via Docker Compose
-   - Health check da aplicação
-
-Cada commit na branch `main` dispara automaticamente a pipeline de CI/CD, garantindo que a versão em produção esteja sempre atualizada.
-
 ## 📚 Documentação Detalhada
 
 Para informações técnicas aprofundadas sobre cada parte do projeto, consulte:
@@ -67,21 +21,6 @@ Para informações técnicas aprofundadas sobre cada parte do projeto, consulte:
   - Como executar localmente
   - Tecnologias React e Vite
   - Boas práticas implementadas
-
-## 📑 Índice
-
-- [🎯 Sobre o Projeto](#-sobre-o-projeto)
-- [🏗️ Arquitetura do Projeto](#️-arquitetura-do-projeto)
-- [🎮 Funcionalidades do Sistema](#-funcionalidades-do-sistema)
-  - [📋 Missão 1: Catalogação](#-missão-1-catalogação-de-patos-primordiais)
-  - [📊 Missão 2: Análise de Captura](#-missão-2-operação-visão-de-captura)
-  - [🚁 Missão 3: Operação de Captura](#-missão-3-operação-de-captura)
-- [🚀 Como Executar](#-como-executar-o-projeto)
-- [🚢 Deploy e CI/CD](#-deploy-e-cicd)
-- [📱 Navegação do Sistema](#-navegação-do-sistema)
-- [🎨 Tecnologias Utilizadas](#-tecnologias-utilizadas)
-- [🧪 Fluxo de Uso](#-fluxo-de-uso-do-sistema)
-- [👥 Autor](#-autor)
 
 ---
 
@@ -322,97 +261,6 @@ Sistema de controle de drones de combate para execução de missões de captura 
 - **Registro**: Novo usuário
 - **Esqueci Senha**: Recuperação por email
 - **Alterar Senha**: Atualização de credenciais
-
----
-
-## 🚀 Como Executar o Projeto
-
-### **Opção 1: Acessar Aplicação em Produção**
-
-Simplesmente acesse os links:
-- **Interface Web**: http://172.172.122.181:8080/
-- **API Swagger**: http://172.172.122.181:7000/swagger/index.html
-
-### **Opção 2: Executar Localmente com Docker**
-
-**Pré-requisitos**:
-- Docker Desktop instalado
-- Git
-
-**Passos**:
-
-```bash
-# 1. Clonar o repositório
-git clone https://github.com/daniellebassetto/primordial-duck-ops.git
-cd primordial-duck-ops
-
-# 2. Iniciar containers com Docker Compose
-docker-compose up -d
-
-# 3. Aguardar inicialização (1-2 minutos)
-
-# 4. Acessar aplicação
-# Frontend: http://localhost:8080
-# Backend: http://localhost:7000/swagger/index.html
-```
-
-**Containers criados**:
-- `primordial-backend`: API .NET 9 na porta 7000
-- `primordial-frontend`: React App na porta 8080  
-- `primordial-mysql`: MySQL 8.0 na porta 3306
-
-**Parar a aplicação**:
-```bash
-docker-compose down
-```
-
-### **Opção 3: Executar Localmente (Desenvolvimento)**
-
-**Backend**:
-
-```bash
-cd backend
-
-# Restaurar dependências
-dotnet restore
-
-# Configurar connection string no appsettings.Development.json
-# "Server=localhost;Port=3306;Database=primordial_duck_db;User=root;Password=sua_senha;"
-
-# Aplicar migrations
-dotnet ef database update --project PrimordialDuckOperation.Infrastructure --startup-project PrimordialDuckOperation.Api
-
-# Executar
-dotnet run --project PrimordialDuckOperation.Api
-# API disponível em: https://localhost:7000
-```
-
-**Frontend**:
-
-```bash
-cd frontend/primordial-duck-frontend
-
-# Instalar dependências
-npm install
-
-# Configurar URL da API no arquivo de serviços se necessário
-# src/services/api.js -> baseURL
-
-# Executar em modo desenvolvimento
-npm run dev
-# Aplicação disponível em: http://localhost:3000
-
-# Build para produção
-npm run build
-```
-
-**Banco de Dados MySQL**:
-```bash
-# Docker
-docker run --name mysql-primordial -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=primordial_duck_db -p 3306:3306 -d mysql:8.0
-
-# Ou instalar MySQL localmente
-```
 
 ---
 
@@ -843,14 +691,6 @@ docker-compose up -d --force-recreate
 
 ## 📊 Portas e Serviços
 
-### **Produção (Azure VM)**
-| Serviço  | Porta | URL                                              |
-|----------|-------|--------------------------------------------------|
-| Frontend | 8080  | http://172.172.122.181:8080/                     |
-| Backend  | 7000  | http://172.172.122.181:7000/swagger/index.html   |
-| MySQL    | 3306  | (interno - não exposto)                          |
-| SSH      | 22    | (acesso restrito)                                |
-
 ### **Desenvolvimento Local**
 | Serviço  | Porta | URL                          |
 |----------|-------|------------------------------|
@@ -949,7 +789,6 @@ docker-compose up -d --force-recreate
 
 ## 👨‍💻 Autor
 
-**Danielle Bassetto**
 - GitHub: [@daniellebassetto](https://github.com/daniellebassetto)
 - LinkedIn: [daniellebassetto](https://linkedin.com/in/daniellebassetto)
 
@@ -960,15 +799,3 @@ docker-compose up -d --force-recreate
 Este projeto foi desenvolvido para o **Dsin Coder Challenge 2025**.
 
 Todos os direitos reservados © 2025 Danielle Bassetto
-
----
-
-## 🙏 Agradecimentos
-
-Agradeço a Dsin pela oportunidade de estar pariticpando mais um ano consecutivo. Esse é meu último ano de participação, vou sentir falta haha!
-
----
-
-**Desenvolvido com 🦆 e ☕ para desvendar o Enigma dos Patos Primordiais**
-
-*"No mundo dos Patos Primordiais, a tecnologia encontra o mistério ancestral."*
