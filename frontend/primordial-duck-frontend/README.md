@@ -4,11 +4,6 @@ Interface web moderna construída com **React 19** e **Vite 7** para gerenciamen
 
 ---
 
-## Acesso à Aplicação
-
-### **Ambiente de Produção**
-- **Interface Web**: http://172.172.122.181:8080
-
 ### **Ambiente Local**
 - **Desenvolvimento (Vite)**: http://localhost:3000
 - **Docker (desenvolvimento)**: http://localhost:3000
@@ -270,12 +265,7 @@ emailjs.send(
 
 ## 🚀 Como Executar o Frontend
 
-### **Opção 1: Acessar Aplicação em Produção**
-
-Acesse diretamente a interface web:
-- **URL**: http://172.172.122.181:8080/
-
-### **Opção 2: Docker**
+### **Opção 1: Docker**
 
 ```bash
 # Na raiz do projeto
@@ -288,7 +278,7 @@ docker logs -f pdo-frontend
 **Frontend estará em**: http://localhost:3000
 
 
-### **Opção 3: Desenvolvimento Local**
+### **Opção 2: Desenvolvimento Local**
 
 **Pré-requisitos**:
 - Node.js 18+ instalado
